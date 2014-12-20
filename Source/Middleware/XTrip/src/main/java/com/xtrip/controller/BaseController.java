@@ -24,7 +24,8 @@ public abstract class BaseController {
 			Date start = Calendar.getInstance().getTime();
 			Properties conf = CommonCoreController.getConfiguration();
 			conf.setProperty(CommonConfigurationEntries.mongo_uri.getValue(),
-					"mongodb://dbowner:forDevelopment!#@165.229.229.148/MetaphorChallenge");
+					"mongodb://127.0.0.1:27017/admin");
+//					"mongodb://admin:<Zrx5Lnun>@SG-xtrip-4108.servers.mongodirector.com:27017/admin");
 			conf.setProperty(
 					CommonConfigurationEntries.mongo_gridfs_enabled.getValue(),
 					"false");
