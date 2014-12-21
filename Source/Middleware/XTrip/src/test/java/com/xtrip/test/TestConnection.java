@@ -34,7 +34,7 @@ public class TestConnection {
 			Properties conf = CommonCoreController.getConfiguration();
 			conf.setProperty(
 					CommonConfigurationEntries.mongo_uri.getValue(),
-					"mongodb://admin:Zrx5Lnun@SG-xtrip-4108.servers.mongodirector.com:27017/admin");
+					"mongodb://admin:HTik0dL2@SG-xtrip-4111.servers.mongodirector.com:27017/local");
 			conf.setProperty(
 					CommonConfigurationEntries.mongo_gridfs_enabled.getValue(),
 					"false");
