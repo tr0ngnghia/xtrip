@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ke.yu.ac.kr</groupId>
 	<artifactId>controller</artifactId>
-	<name>MetaphorChallengeWeb</name>
+	<name>Xtrip</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
