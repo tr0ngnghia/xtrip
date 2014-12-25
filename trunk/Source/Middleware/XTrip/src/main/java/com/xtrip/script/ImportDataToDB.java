@@ -17,7 +17,8 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xtrip.model.bean.BLocation;
+import com.xtrip.model.LocationModel;
+import com.xtrip.model.bean.Location;
 
 public class ImportDataToDB extends BasicTask {
 	private static final Logger logger = LoggerFactory
@@ -56,6 +57,7 @@ public class ImportDataToDB extends BasicTask {
 		return sb.toString();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void importLocationData() {
 		String data = loadFile(files.get(FileType.LOCATIONS));
 		try {
@@ -67,12 +69,13 @@ public class ImportDataToDB extends BasicTask {
 				while (iterator.hasNext()) {
 					JSONObject lobj = (JSONObject) iterator.next();
 
-					BLocation location = new BLocation();
-					location.name = ((String) lobj.get("Name")).trim();
-					location.description = ((String) lobj.get("Description")).trim();
-					location.longtitude = (Double) lobj.get("Lng");
-					location.latitude = (Double) lobj.get("Lat");
-					location.save();
+					Location location = new Location();
+					location.setName(((String) lobj.get("Name")).trim());
+					location.setDescription(((String) lobj.get("Description")).trim());
+					location.setLongtitude((Double) lobj.get("Lng"));
+					location.setLatitude((Double) lobj.get("Lat"));
+					
+					LocationModel.getInstance().set(location);
 				}
 			}
 		} catch (ParseException ex) {

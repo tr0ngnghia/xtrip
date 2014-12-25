@@ -10,7 +10,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xtrip.model.bean.BaseBean;
+import com.xtrip.model.BaseModel;
 import com.xtrip.model.connectors.JavaJongo;
 import com.xtrip.mongo.CommonConfigurationEntries;
 import com.xtrip.mongo.CommonCoreController;
@@ -34,7 +34,7 @@ public abstract class BasicTask {
 					CommonConfigurationEntries.mongo_gridfs_enabled.getValue(),
 					"false");
 			JavaJongo.forceNewInstance();
-			BaseBean.connector = JavaJongo.getInstance();
+			BaseModel.connector = JavaJongo.getInstance();
 		}
 	}
 

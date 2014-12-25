@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import com.xtrip.model.bean.BaseBean;
+import com.xtrip.model.BaseModel;
 import com.xtrip.model.connectors.JavaJongo;
 
 /**
@@ -37,7 +37,7 @@ public class CommonCoreController {
 			configuration = conf;
 		}
 		
-		BaseBean.connector = JavaJongo.getInstance();
+		BaseModel.connector = JavaJongo.getInstance();
 	}
 
 	public static void setConfiguration(Properties conf) {

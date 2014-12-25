@@ -8,7 +8,7 @@ public class Common {
 	public static String URL_PREFIX = "http://ke.yu.ac.kr:8080/metaphor";
 	
 	public enum LocationType {
-		HOTEL, RESTAURANT, SIGHT_SEEING
+		DEFAULT, HOTEL, RESTAURANT, SIGHT_SEEING
 	}
 	
 	public enum RoleType {
