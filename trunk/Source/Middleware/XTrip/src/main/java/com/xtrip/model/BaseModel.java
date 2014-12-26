@@ -46,10 +46,6 @@ public abstract class BaseModel {
 		return all().findOne(query).as(getClassInfo());
 	}
 
-	public Object find(String query) {
-		return all().find(query).as(getClassInfo());
-	}
-
 	public Object findWithProjection(String query, String projection) {
 		return all().find(query).projection(projection).as(getClassInfo());
 	}

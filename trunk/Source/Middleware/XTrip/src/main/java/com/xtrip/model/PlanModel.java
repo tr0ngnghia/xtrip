@@ -41,7 +41,7 @@ public class PlanModel extends BaseModel {
 
 	@Override
 	public Class<?> getClassInfo() {
-		return Location.class;
+		return Plan.class;
 	}
 
 	public MongoCollection locations() {
@@ -83,7 +83,7 @@ public class PlanModel extends BaseModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ObjectId> getAllPlanId() {
+	public List<ObjectId> getAllPlanIds() {
 		List<ObjectId> res = new ArrayList<ObjectId>();
 		Iterable<Plan> plans = (Iterable<Plan>) findWithProjection("{}",
 				"{}");
