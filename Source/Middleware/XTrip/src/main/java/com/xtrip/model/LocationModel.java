@@ -52,8 +52,7 @@ public class LocationModel extends BaseModel {
 	public void ensureIndexes(Map<String, String> indexes) {
 		if (indexes == null) {
 			indexes = new HashMap<String, String>();
-			indexes.put("{id : 1}",
-					"{background: true, dropDups: true}");
+			indexes.put("{name : 1, description: 1}", "{background: true, dropDups: true}");
 		}
 		this.createIndexes(indexes);
 	}
@@ -66,7 +65,7 @@ public class LocationModel extends BaseModel {
 			error = all().update(location._id).with(location).getError();
 		return error == null || "".equals(error);
 	}
-	
+
 	public Location get(ObjectId _id) {
 		return (Location) all().findOne(_id).as(getClassInfo());
 	}
@@ -83,10 +82,10 @@ public class LocationModel extends BaseModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ObjectId> getAllLocationId(String query, String projection) {
+	public List<ObjectId> getAllLocationId() {
 		List<ObjectId> res = new ArrayList<ObjectId>();
 		Iterable<Location> locations = (Iterable<Location>) findWithProjection(
-				query, projection);
+				"{}", "{}");
 		for (Location location : locations) {
 			res.add(location._id);
 
