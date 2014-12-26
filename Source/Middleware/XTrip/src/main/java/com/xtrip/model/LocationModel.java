@@ -11,6 +11,7 @@ import org.jongo.ResultHandler;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mongodb.DBObject;
+import com.mongodb.QueryBuilder;
 import com.xtrip.model.bean.Location;
 
 /**
@@ -18,7 +19,7 @@ import com.xtrip.model.bean.Location;
  */
 public class LocationModel extends BaseModel {
 	@JsonIgnore
-	public static String COLLECTION_NAME = "locations";
+	public static String COLLECTION_NAME = "locations_test";
 
 	private static LocationModel instance = null;
 
@@ -52,7 +53,8 @@ public class LocationModel extends BaseModel {
 	public void ensureIndexes(Map<String, String> indexes) {
 		if (indexes == null) {
 			indexes = new HashMap<String, String>();
-			indexes.put("{name : 1, description: 1}", "{background: true, dropDups: true}");
+			indexes.put("{name : 1, description: 1}",
+					"{background: true, dropDups: true}");
 		}
 		this.createIndexes(indexes);
 	}
@@ -70,6 +72,21 @@ public class LocationModel extends BaseModel {
 		return (Location) all().findOne(_id).as(getClassInfo());
 	}
 
+	public List<Location> multiGet(List<ObjectId> _ids) {
+		List<Location> res = new ArrayList<Location>();
+		String[] ids = new String[_ids.size()];
+		for (int i = 0; i < _ids.size(); i++) {
+			ids[i] = _ids.get(i).toString();
+		}
+		DBObject query = QueryBuilder.start("_id").in(ids).get();
+		String newQuery = "{ _id : { $in : [ObjectId(\"549cc12ae160c2f93cb00170\"), ObjectId(\"549cc14de160590fe6ea6a05\")], }}";
+		Iterable<Location> locations = (Iterable<Location>) all().find(newQuery);
+		for (Location location : locations) {
+			res.add(location);
+		}
+		return res;
+	}
+
 	public Integer getTotalNumberOfLocation() {
 		return all().aggregate("{$group : {_id : 0, count : {$sum : 1}}}")
 				.map(new ResultHandler<Integer>() {
@@ -82,7 +99,7 @@ public class LocationModel extends BaseModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ObjectId> getAllLocationId() {
+	public List<ObjectId> getAllLocationIds() {
 		List<ObjectId> res = new ArrayList<ObjectId>();
 		Iterable<Location> locations = (Iterable<Location>) findWithProjection(
 				"{}", "{}");

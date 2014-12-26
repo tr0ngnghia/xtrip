@@ -1,5 +1,6 @@
 package com.xtrip.script;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -24,7 +25,7 @@ public class TestModel extends BasicTask {
 		LocationModel.getInstance().remove(new ObjectId("549c1157e160914d721bed21"));
 		
 		//----------------- Get All Location Id method -----------------
-		List<ObjectId> objectIds = LocationModel.getInstance().getAllLocationId();
+		List<ObjectId> objectIds = LocationModel.getInstance().getAllLocationIds();
 		for(Object objectId : objectIds) {
 			System.out.println(objectId.toString());
 		}
@@ -33,9 +34,17 @@ public class TestModel extends BasicTask {
 		System.out.println(LocationModel.getInstance().getTotalNumberOfLocation());
 		
 		//----------------- Get method -----------------
-		Location res = LocationModel.getInstance().get(new ObjectId("549c0cd9e160ed69abe34767"));
+		Location res = LocationModel.getInstance().get(new ObjectId("549cc12ae160c2f93cb00170"));
 		System.out.println(res.getDescription());
 		
+		//----------------- Multi Get method -----------------
+		List<ObjectId> _objectIds = new ArrayList<ObjectId>();
+		_objectIds.add(new ObjectId("549cc12ae160c2f93cb00170"));
+		_objectIds.add(new ObjectId("549cc14de160590fe6ea6a05"));
+		List<Location> locations = LocationModel.getInstance().multiGet(_objectIds);
+		for (Location l : locations){
+			System.out.println(l._id.toString());
+		}
 		
 		System.out.println("DONE");
 	}

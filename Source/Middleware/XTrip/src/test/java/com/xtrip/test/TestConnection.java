@@ -10,8 +10,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.xtrip.model.bean.BLocation;
-import com.xtrip.model.bean.BaseBean;
+import com.xtrip.model.BaseModel;
 import com.xtrip.model.connectors.JavaJongo;
 import com.xtrip.mongo.CommonConfigurationEntries;
 import com.xtrip.mongo.CommonCoreController;
@@ -38,10 +37,7 @@ public class TestConnection {
 					CommonConfigurationEntries.mongo_gridfs_enabled.getValue(),
 					"false");
 			JavaJongo.forceNewInstance();
-			BaseBean.connector = JavaJongo.getInstance();
-			
-			BLocation blocation = new BLocation();
-			blocation.save();
+			BaseModel.connector = JavaJongo.getInstance();
 
 			logger.info("END++++++++++++++++++++++++++");
 			Long interval = (Calendar.getInstance().getTimeInMillis() - start
