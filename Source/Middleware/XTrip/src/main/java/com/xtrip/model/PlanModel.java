@@ -11,7 +11,6 @@ import org.jongo.ResultHandler;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mongodb.DBObject;
-import com.xtrip.model.bean.Location;
 import com.xtrip.model.bean.Plan;
 
 /**
@@ -53,7 +52,8 @@ public class PlanModel extends BaseModel {
 	public void ensureIndexes(Map<String, String> indexes) {
 		if (indexes == null) {
 			indexes = new HashMap<String, String>();
-			indexes.put("{name : 1, description: 1}", "{background: true, dropDups: true}");
+			indexes.put("{name : 1, description: 1}",
+					"{background: true, dropDups: true}");
 		}
 		this.createIndexes(indexes);
 	}
@@ -71,6 +71,16 @@ public class PlanModel extends BaseModel {
 		return (Plan) all().findOne(_id).as(getClassInfo());
 	}
 
+	public List<Plan> multiGet(List<ObjectId> _ids) {
+		List<Plan> res = new ArrayList<Plan>();
+		Iterable<Plan> plans = (Iterable<Plan>) all().find("{_id:{$in:#}}",
+				_ids).as(Plan.class);
+		for (Plan plan : plans) {
+			res.add(plan);
+		}
+		return res;
+	}
+
 	public Integer getTotalNumberOfPlan() {
 		return all().aggregate("{$group : {_id : 0, count : {$sum : 1}}}")
 				.map(new ResultHandler<Integer>() {
@@ -86,7 +96,7 @@ public class PlanModel extends BaseModel {
 	public List<ObjectId> getAllPlanIds() {
 		List<ObjectId> res = new ArrayList<ObjectId>();
 		Iterable<Plan> plans = (Iterable<Plan>) findWithProjection("{}",
-				"{}");
+				"{_id : 1}");
 		for (Plan plan : plans) {
 			res.add(plan._id);
 

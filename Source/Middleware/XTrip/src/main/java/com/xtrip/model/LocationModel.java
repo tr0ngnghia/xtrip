@@ -11,7 +11,6 @@ import org.jongo.ResultHandler;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mongodb.DBObject;
-import com.mongodb.QueryBuilder;
 import com.xtrip.model.bean.Location;
 
 /**
@@ -19,7 +18,7 @@ import com.xtrip.model.bean.Location;
  */
 public class LocationModel extends BaseModel {
 	@JsonIgnore
-	public static String COLLECTION_NAME = "locations_test";
+	public static String COLLECTION_NAME = "locations";
 
 	private static LocationModel instance = null;
 
@@ -74,13 +73,8 @@ public class LocationModel extends BaseModel {
 
 	public List<Location> multiGet(List<ObjectId> _ids) {
 		List<Location> res = new ArrayList<Location>();
-		String[] ids = new String[_ids.size()];
-		for (int i = 0; i < _ids.size(); i++) {
-			ids[i] = _ids.get(i).toString();
-		}
-		DBObject query = QueryBuilder.start("_id").in(ids).get();
-		String newQuery = "{ _id : { $in : [ObjectId(\"549cc12ae160c2f93cb00170\"), ObjectId(\"549cc14de160590fe6ea6a05\")], }}";
-		Iterable<Location> locations = (Iterable<Location>) all().find(newQuery);
+		Iterable<Location> locations = (Iterable<Location>) all().find(
+				"{_id:{$in:#}}", _ids).as(Location.class);
 		for (Location location : locations) {
 			res.add(location);
 		}
@@ -102,7 +96,7 @@ public class LocationModel extends BaseModel {
 	public List<ObjectId> getAllLocationIds() {
 		List<ObjectId> res = new ArrayList<ObjectId>();
 		Iterable<Location> locations = (Iterable<Location>) findWithProjection(
-				"{}", "{}");
+				"{}", "{_id : 1}");
 		for (Location location : locations) {
 			res.add(location._id);
 
