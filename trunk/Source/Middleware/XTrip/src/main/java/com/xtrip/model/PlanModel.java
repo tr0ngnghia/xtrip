@@ -53,7 +53,7 @@ public class PlanModel extends BaseModel {
 	public void ensureIndexes(Map<String, String> indexes) {
 		if (indexes == null) {
 			indexes = new HashMap<String, String>();
-			indexes.put("{id : 1}", "{background: true, dropDups: true}");
+			indexes.put("{name : 1, description: 1}", "{background: true, dropDups: true}");
 		}
 		this.createIndexes(indexes);
 	}
@@ -83,10 +83,10 @@ public class PlanModel extends BaseModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ObjectId> getAllPlanId(String query, String projection) {
+	public List<ObjectId> getAllPlanId() {
 		List<ObjectId> res = new ArrayList<ObjectId>();
-		Iterable<Plan> plans = (Iterable<Plan>) findWithProjection(query,
-				projection);
+		Iterable<Plan> plans = (Iterable<Plan>) findWithProjection("{}",
+				"{}");
 		for (Plan plan : plans) {
 			res.add(plan._id);
 
