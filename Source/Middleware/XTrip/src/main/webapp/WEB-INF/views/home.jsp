@@ -9,7 +9,11 @@
 <body>
 	<center>
 		<h1>Xtrip API Reference Guide is now available at 
-		<br>/svn/Document/APIReference/XTripAPIReference.pdf</h1>		
+		<br>
+		<a href="https://code.google.com/p/x-trip/source/browse/trunk/Document/APIReference/XTripAPIReference.pdf">
+		https://code.google.com/p/x-trip/source/browse/trunk/Document/APIReference/XTripAPIReference.pdf
+		</a>
+		</h1>		
 	</center>		
 </body>
 </html>
