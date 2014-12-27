@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.xtrip.common.CommonResponse;
+import com.xtrip.common.XResponse;
 import com.xtrip.model.LocationModel;
 import com.xtrip.model.bean.Location;
 
@@ -19,114 +21,190 @@ public class LocationController{
 
 	@RequestMapping("/get")
 	public @ResponseBody
-	 Location get(@RequestParam(value = "id", defaultValue = "0") String id) {
+	 XResponse get(@RequestParam(value = "id", required = false) String id) {
 		try{
-			Location ret = LocationModel.getInstance().get(new ObjectId(id));
-			if(ret != null){
-				return ret;
+			XResponse res = new XResponse();
+			
+			if(id == null || id.isEmpty()){
+				return CommonResponse.MISSING_PARAM;
+			}			
+			
+			if(!ObjectId.isValid(id)){
+				return CommonResponse.INVALID_PARAM;
 			}
+			
+			Location location = LocationModel.getInstance().get(new ObjectId(id));			
+			res.setData(location);
+			return res;
 		}catch(Exception ex){
-		}
-		return null;
+			return CommonResponse.SERVER_ERROR;			
+		}		
 	}
 	
 	@RequestMapping("/getTotal")
 	public @ResponseBody
-	 int getTotal(@RequestParam(value = "id", defaultValue = "") String id){
-		try{			
+	XResponse getTotal(){
+		try{		
+			XResponse res = new XResponse();
 			int total = LocationModel.getInstance().getTotalNumberOfLocation();
-			return total;
+			res.setData(total);
+			return res;
 		}catch(Exception ex){
+			return CommonResponse.SERVER_ERROR;
 		}
-		return 0;
 	}
 	
 	@RequestMapping("/getAll")
 	public @ResponseBody
-	 List<Location> getAll() {
-		List<Location> ret = new ArrayList<Location>();
-		List<ObjectId> ids = LocationModel.getInstance().getAllLocationIds();
-		if(ids != null){
-			List<Location> locations = LocationModel.getInstance().multiGet(ids);
-			if(locations != null){
-				ret.addAll(locations);
-			}
-		}		
-		return ret;
+	XResponse getAll() {
+		try{
+			XResponse res = new XResponse();
+			List<ObjectId> ids = LocationModel.getInstance().getAllLocationIds();
+			if(ids != null){
+				List<Location> locations = LocationModel.getInstance().multiGet(ids);
+				if(locations != null){
+					res.setData(locations);
+				}
+			}		
+			return res;
+		}catch(Exception ex){
+			return CommonResponse.SERVER_ERROR;
+		}
 	}
 	
 	@RequestMapping("/getAllIds")
 	public @ResponseBody
-	 List<String> getAllIds() {
-		List<String> ret = new ArrayList<String>();
-		List<ObjectId> ids = LocationModel.getInstance().getAllLocationIds();
-		for(ObjectId id : ids){
-			ret.add(id.toString());
+	XResponse getAllIds() {
+		try{
+			XResponse res = new XResponse();
+			List<String> ids = new ArrayList<String>();
+			List<ObjectId> objIds = LocationModel.getInstance().getAllLocationIds();
+			for(ObjectId id : objIds){
+				ids.add(id.toString());
+			}
+			res.setData(ids);
+			return res;
+		}catch(Exception ex){
+			return CommonResponse.SERVER_ERROR;
 		}
-		return ret;
 	}
 	
 	@RequestMapping("/getSlice")
 	public @ResponseBody
-	 List<Location> getSlice(@RequestParam(value = "index", defaultValue = "0") int index,
-	 		 				 @RequestParam(value = "count", defaultValue = "10") int count){
-		List<Location> ret = new ArrayList<Location>();
-		List<ObjectId> ids = LocationModel.getInstance().getAllLocationIds();
-		if(ids != null){
-			int fromIndex = index < 0 ? 0 : (index > ids.size() ? ids.size() : index);
-			int toIndex = fromIndex + count > ids.size() ? ids.size() : fromIndex + count;
-					
-			List<Location> locations = LocationModel.getInstance().multiGet(ids.subList(fromIndex, toIndex));
-			if(locations != null){
-				ret.addAll(locations);
-			}
-		}		
-		return ret;
+	XResponse getSlice(@RequestParam(value = "index", defaultValue = "0") int index,
+					   @RequestParam(value = "count", defaultValue = "10") int count){
+		try{
+			XResponse res = new XResponse();
+			List<ObjectId> ids = LocationModel.getInstance().getAllLocationIds();
+			if(ids != null){
+				int fromIndex = index < 0 ? 0 : (index > ids.size() ? ids.size() : index);
+				int toIndex = fromIndex + count > ids.size() ? ids.size() : fromIndex + count;
+						
+				List<Location> locations = LocationModel.getInstance().multiGet(ids.subList(fromIndex, toIndex));
+				if(locations != null){
+					res.setData(locations);
+				}
+			}		
+			return res;
+		}catch(Exception ex){
+			return CommonResponse.SERVER_ERROR;
+		}
 	}
 	
 	@RequestMapping("/create")
 	public @ResponseBody
-	 Location create(@RequestParam(value = "name", defaultValue = "new location") String name,
-			 		 @RequestParam(value = "desc", defaultValue = "") String desc){
+	XResponse create(@RequestParam(value = "name", required = false) String name,
+			 		 @RequestParam(value = "desc", required = false) String desc,
+			 		 @RequestParam(value = "lat", defaultValue = "0") Double lat,
+			 		 @RequestParam(value = "lng", defaultValue = "0") Double lng){
 		try{
+			XResponse res = new XResponse();
+			
+			if(name == null || desc == null){
+				return CommonResponse.MISSING_PARAM;						
+			}
+			
+			if(name.isEmpty() || desc.isEmpty()){
+				return CommonResponse.INVALID_PARAM;
+			}		
+			
 			Location location = new Location();
 			location.setName(name);
 			location.setDescription(desc);
+			location.setDateCreated(System.currentTimeMillis());
+			location.setDateModified(System.currentTimeMillis());
+			location.setLatitude(lat);
+			location.setLongtitude(lng);
 			LocationModel.getInstance().set(location);
 			
-			return location;
+			res.setData(location);
+			return res;
 		}catch(Exception ex){
+			return CommonResponse.SERVER_ERROR;
 		}
-		return null;
 	}
 	
 	@RequestMapping("/update")
 	public @ResponseBody
-	 Location update(@RequestParam(value = "name", defaultValue = "new location") String name,
-			 		 @RequestParam(value = "desc", defaultValue = "") String desc,
-			 		@RequestParam(value = "id", defaultValue = "") String id){
+	XResponse update(@RequestParam(value = "name", required = false) String name,
+	 		 @RequestParam(value = "desc", required = false) String desc,
+	 		 @RequestParam(value = "lat", required = false) Double lat,
+	 		 @RequestParam(value = "lng", required = false) Double lng,
+	 		 @RequestParam(value = "id", required = false) String id){
 		try{
-			Location location = LocationModel.getInstance().get(new ObjectId(id));
-			location.setName(name);
-			location.setDescription(desc);
+			XResponse res = new XResponse();
+			
+			if(id == null || id.isEmpty()){
+				return CommonResponse.MISSING_PARAM;
+			}			
+			
+			if(!ObjectId.isValid(id)){
+				return CommonResponse.INVALID_PARAM;
+			}
+			
+			Location location = LocationModel.getInstance().get(new ObjectId(id));		
+			if(location == null){
+				return CommonResponse.ITEM_NOTFOUND;
+			}
+			
+			if(name != null && name.isEmpty()){
+				location.setName(name);
+			}
+			if(desc != null && desc.isEmpty()){
+				location.setDescription(desc);
+			}
+			if(lat != null){
+				location.setLatitude(lat);
+			}
+			if(lng != null){
+				location.setLongtitude(lng);
+			}			
 			location.setDateModified(System.currentTimeMillis());
 			LocationModel.getInstance().set(location);
-			
-			return location;
+			res.setData(location);
+			return res;
 		}catch(Exception ex){
+			return CommonResponse.SERVER_ERROR;
 		}
-		return null;
 	}
 	
 	@RequestMapping("/delete")
 	public @ResponseBody
-	 int create(@RequestParam(value = "id", defaultValue = "") String id){
+	XResponse create(@RequestParam(value = "id", required = false) String id){
 		try{			
+			XResponse res = new XResponse();
+			if(id == null || id.isEmpty()){
+				return CommonResponse.MISSING_PARAM;
+			}			
+			
+			if(!ObjectId.isValid(id)){
+				return CommonResponse.INVALID_PARAM;
+			}
 			LocationModel.getInstance().remove(new ObjectId(id));			
-			return 0;
+			return res;
 		}catch(Exception ex){
+			return CommonResponse.SERVER_ERROR;
 		}
-		return -1;
 	}
 
 }
