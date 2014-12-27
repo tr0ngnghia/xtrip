@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xtrip.common.CommonResponse;
 import com.xtrip.common.XResponse;
+import com.xtrip.entity.XLocation;
 import com.xtrip.model.LocationModel;
 import com.xtrip.model.bean.Location;
 
@@ -33,8 +34,11 @@ public class LocationController{
 				return CommonResponse.INVALID_PARAM;
 			}
 			
-			Location location = LocationModel.getInstance().get(new ObjectId(id));			
-			res.setData(location);
+			Location location = LocationModel.getInstance().get(new ObjectId(id));		
+			if(location == null){
+				return CommonResponse.ITEM_NOTFOUND;
+			}
+			res.setData(toXLocation(location));
 			return res;
 		}catch(Exception ex){
 			return CommonResponse.SERVER_ERROR;			
@@ -61,10 +65,14 @@ public class LocationController{
 			XResponse res = new XResponse();
 			List<ObjectId> ids = LocationModel.getInstance().getAllLocationIds();
 			if(ids != null){
-				List<Location> locations = LocationModel.getInstance().multiGet(ids);
-				if(locations != null){
-					res.setData(locations);
+				List<XLocation> xLocations = new ArrayList<XLocation>();
+				List<Location> mLocations = LocationModel.getInstance().multiGet(ids);
+				if(mLocations != null){
+					for(Location mLocation : mLocations){
+						xLocations.add(toXLocation(mLocation));
+					}
 				}
+				res.setData(xLocations);
 			}		
 			return res;
 		}catch(Exception ex){
@@ -97,13 +105,16 @@ public class LocationController{
 			XResponse res = new XResponse();
 			List<ObjectId> ids = LocationModel.getInstance().getAllLocationIds();
 			if(ids != null){
+				List<XLocation> xLocations = new ArrayList<XLocation>();
 				int fromIndex = index < 0 ? 0 : (index > ids.size() ? ids.size() : index);
-				int toIndex = fromIndex + count > ids.size() ? ids.size() : fromIndex + count;
-						
-				List<Location> locations = LocationModel.getInstance().multiGet(ids.subList(fromIndex, toIndex));
-				if(locations != null){
-					res.setData(locations);
+				int toIndex = fromIndex + count > ids.size() ? ids.size() : fromIndex + count;						
+				List<Location> mLocations = LocationModel.getInstance().multiGet(ids.subList(fromIndex, toIndex));
+				if(mLocations != null){
+					for(Location mLocation : mLocations){
+						xLocations.add(toXLocation(mLocation));
+					}
 				}
+				res.setData(xLocations);
 			}		
 			return res;
 		}catch(Exception ex){
@@ -128,16 +139,16 @@ public class LocationController{
 				return CommonResponse.INVALID_PARAM;
 			}		
 			
-			Location location = new Location();
-			location.setName(name);
-			location.setDescription(desc);
-			location.setDateCreated(System.currentTimeMillis());
-			location.setDateModified(System.currentTimeMillis());
-			location.setLatitude(lat);
-			location.setLongtitude(lng);
-			LocationModel.getInstance().set(location);
+			Location mLocation = new Location();
+			mLocation.setName(name);
+			mLocation.setDescription(desc);
+			mLocation.setDateCreated(System.currentTimeMillis());
+			mLocation.setDateModified(System.currentTimeMillis());
+			mLocation.setLatitude(lat);
+			mLocation.setLongtitude(lng);
+			LocationModel.getInstance().set(mLocation);
 			
-			res.setData(location);
+			res.setData(toXLocation(mLocation));
 			return res;
 		}catch(Exception ex){
 			return CommonResponse.SERVER_ERROR;
@@ -162,26 +173,26 @@ public class LocationController{
 				return CommonResponse.INVALID_PARAM;
 			}
 			
-			Location location = LocationModel.getInstance().get(new ObjectId(id));		
-			if(location == null){
+			Location mLocation = LocationModel.getInstance().get(new ObjectId(id));		
+			if(mLocation == null){
 				return CommonResponse.ITEM_NOTFOUND;
 			}
 			
 			if(name != null && name.isEmpty()){
-				location.setName(name);
+				mLocation.setName(name);
 			}
 			if(desc != null && desc.isEmpty()){
-				location.setDescription(desc);
+				mLocation.setDescription(desc);
 			}
 			if(lat != null){
-				location.setLatitude(lat);
+				mLocation.setLatitude(lat);
 			}
 			if(lng != null){
-				location.setLongtitude(lng);
+				mLocation.setLongtitude(lng);
 			}			
-			location.setDateModified(System.currentTimeMillis());
-			LocationModel.getInstance().set(location);
-			res.setData(location);
+			mLocation.setDateModified(System.currentTimeMillis());
+			LocationModel.getInstance().set(mLocation);
+			res.setData(toXLocation(mLocation));
 			return res;
 		}catch(Exception ex){
 			return CommonResponse.SERVER_ERROR;
@@ -190,7 +201,7 @@ public class LocationController{
 	
 	@RequestMapping("/delete")
 	public @ResponseBody
-	XResponse create(@RequestParam(value = "id", required = false) String id){
+	XResponse delete(@RequestParam(value = "id", required = false) String id){
 		try{			
 			XResponse res = new XResponse();
 			if(id == null || id.isEmpty()){
@@ -206,5 +217,26 @@ public class LocationController{
 			return CommonResponse.SERVER_ERROR;
 		}
 	}
+	
+	private XLocation toXLocation(Location mLocation){
+		XLocation ret = new XLocation();
+		
+		if(mLocation != null){
+			ret.setId(mLocation.getId());
+			ret.setName(mLocation.getName());
+			ret.setDescription(mLocation.getDescription());
+			ret.setLatitude(mLocation.getLatitude());
+			ret.setLongtitude(mLocation.getLongtitude());
+			ret.setType(mLocation.getType());
+			ret.setDateCreated(mLocation.getDateCreated());
+			ret.setDateModified(mLocation.getDateModified());
+			ret.setIsPublic(mLocation.getIsPublic());
+			ret.setIsShared(mLocation.getIsShared());
+			ret.setImageUrls(mLocation.getImageUrls());
+		}
+		
+		return ret;
+	}
+	
 
 }
