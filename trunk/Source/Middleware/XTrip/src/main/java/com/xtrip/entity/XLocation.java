@@ -8,28 +8,38 @@ import com.xtrip.common.Common.LocationType;
 public class XLocation {
 	private String id;
 	private String name;
-	private String description;
+	private String shortDesc;
+	private String longDesc;
 	private LocationType type;
-	private Double longtitude;
-	private Double latitude;
-	private List<String> imageUrls;
+	private Double lng;
+	private Double lat;
+	private String avatar;
+	private List<String> galary;
 	private Boolean isShared;
 	private Boolean isPublic;
 	private long dateCreated;
 	private long dateModified;	
+	private int rating;
+	private int visit;
+	private float price;
 
 	public XLocation() {
 		id = "";
 		name = "";
-		description = "";
+		shortDesc = "";
+		longDesc = "";
 		type = LocationType.DEFAULT;
-		longtitude = 0.0;
-		latitude = 0.0;
-		imageUrls = new ArrayList<String>();
+		lng = 0.0;
+		lat = 0.0;
+		avatar = "";
+		galary = new ArrayList<String>();
 		isShared = true;
 		isPublic = true;
 		dateCreated = System.currentTimeMillis();
 		dateModified = System.currentTimeMillis();
+		rating = 0;
+		visit = 0;
+		price = 0;
 	}
 	
 	public String getId() {
@@ -48,14 +58,30 @@ public class XLocation {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return this.description;
+	public String getShortDesc() {
+		return this.shortDesc;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setShortDesc(String shortDesc) {
+		this.shortDesc = shortDesc;
+	}
+	
+	public String getLongDesc() {
+		return this.longDesc;
 	}
 
+	public void setLongDesc(String longDesc) {
+		this.longDesc = longDesc;
+	}
+
+	public String getAvatar() {
+		return this.avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+	
 	public LocationType getType() {
 		return this.type;
 	}
@@ -64,28 +90,28 @@ public class XLocation {
 		this.type = type;
 	}
 
-	public Double getLongtitude() {
-		return this.longtitude;
+	public Double getLng() {
+		return this.lng;
 	}
 
-	public void setLongtitude(Double longtitude) {
-		this.longtitude = longtitude;
+	public void setLng(Double lng) {
+		this.lng = lng;
 	}
 
-	public Double getLatitude() {
-		return this.latitude;
+	public Double getLat() {
+		return this.lat;
 	}
 
-	public void setLatitude(Double latitude) {
-		this.latitude = latitude;
+	public void setLat(Double lat) {
+		this.lat = lat;
 	}
 
-	public List<String> getImageUrls() {
-		return this.imageUrls;
+	public List<String> getGalary() {
+		return this.galary;
 	}
 
-	public void setImageUrls(List<String> imageUrls) {
-		this.imageUrls = imageUrls;
+	public void setGalary(List<String> imageUrls) {
+		this.galary = imageUrls;
 	}
 
 	public Boolean getIsShared() {
@@ -118,5 +144,29 @@ public class XLocation {
 
 	public void setDateModified(long dateModified) {
 		this.dateModified = dateModified;
+	}
+	
+	public int getRating() {
+		return this.rating;
+	}
+
+	public void setRating(int rating) {
+		this.rating = rating;
+	}
+	
+	public int getVisit() {
+		return this.visit;
+	}
+
+	public void setVisit(int visit) {
+		this.visit = visit;
+	}
+	
+	public float getPrice() {
+		return this.price;
+	}
+
+	public void setPrice(long price) {
+		this.price = price;
 	}
 }

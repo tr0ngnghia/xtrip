@@ -9,11 +9,15 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -166,15 +170,12 @@ public class LocationController{
 	
 	@RequestMapping("/update")
 	public @ResponseBody
-	XResponse update(@RequestParam(value = "name", required = false) String name,
-	 		 @RequestParam(value = "desc", required = false) String desc,
-	 		 @RequestParam(value = "lat", required = false) Double lat,
-	 		 @RequestParam(value = "lng", required = false) Double lng,
+	XResponse update(@RequestParam(value = "data", required = false) String data,	 		
 	 		 @RequestParam(value = "id", required = false) String id){
 		try{
 			XResponse res = new XResponse();
 			
-			if(id == null || id.isEmpty()){
+			if(id == null || id.isEmpty() || data == null || data.isEmpty()){
 				return CommonResponse.MISSING_PARAM;
 			}			
 			
@@ -187,19 +188,19 @@ public class LocationController{
 				return CommonResponse.ITEM_NOTFOUND;
 			}
 			
-			if(name != null && name.isEmpty()){
-				mLocation.setName(name);
-			}
-			if(desc != null && desc.isEmpty()){
-				mLocation.setDescription(desc);
-			}
-			if(lat != null){
-				mLocation.setLatitude(lat);
-			}
-			if(lng != null){
-				mLocation.setLongtitude(lng);
-			}			
+			ObjectMapper mapper = new ObjectMapper();
+			XLocation xLocation = mapper.readValue(data, XLocation.class);
+			
 			mLocation.setDateModified(System.currentTimeMillis());
+			mLocation.setName(xLocation.getName());
+			mLocation.setDescription(xLocation.getShortDesc());
+			mLocation.setLatitude(xLocation.getLat());
+			mLocation.setLongtitude(xLocation.getLng());
+			mLocation.setImageUrls(xLocation.getGalary());
+			mLocation.setIsPublic(xLocation.getIsPublic());
+			mLocation.setIsShared(xLocation.getIsShared());
+			mLocation.setType(xLocation.getType());
+			
 			LocationModel.getInstance().set(mLocation);
 			res.setData(toXLocation(mLocation));
 			return res;
@@ -300,19 +301,17 @@ public class LocationController{
 		if(mLocation != null){
 			ret.setId(mLocation.getId());
 			ret.setName(mLocation.getName());
-			ret.setDescription(mLocation.getDescription());
-			ret.setLatitude(mLocation.getLatitude());
-			ret.setLongtitude(mLocation.getLongtitude());
+			ret.setShortDesc(mLocation.getDescription());
+			ret.setLat(mLocation.getLatitude());
+			ret.setLng(mLocation.getLongtitude());
 			ret.setType(mLocation.getType());
 			ret.setDateCreated(mLocation.getDateCreated());
 			ret.setDateModified(mLocation.getDateModified());
 			ret.setIsPublic(mLocation.getIsPublic());
 			ret.setIsShared(mLocation.getIsShared());
-			ret.setImageUrls(mLocation.getImageUrls());
+			ret.setGalary(mLocation.getImageUrls());
 		}
 		
 		return ret;
 	}
-	
-
 }
