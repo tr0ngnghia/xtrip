@@ -8,9 +8,8 @@
 </head>
 <body>
 	<center>
-		<h1>Xtrip API Reference Guide</h1>
-		<h1>Comming Soon</h1>
-		<h1>Merry Christmas Xtrip-guys</h1>
+		<h1>Xtrip API Reference Guide is now available at 
+		<br>/svn/Document/APIReference/XTripAPIReference.pdf</h1>		
 	</center>		
 </body>
 </html>
