@@ -1,48 +1,43 @@
-package com.xtrip.model.bean;
+package com.xtrip.entity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.xtrip.common.Common.LocationType;
 
-/**
- * @author longnh
- */
-public class Location extends BaseBean {
+public class XLocation {
+	private String id;
 	private String name;
 	private String description;
 	private LocationType type;
 	private Double longtitude;
 	private Double latitude;
 	private List<String> imageUrls;
-	private List<String> planIds;
 	private Boolean isShared;
 	private Boolean isPublic;
 	private long dateCreated;
-	private long dateModified;
-	private List<String> likeIds;
-	private List<String> commentIds;
-	private List<String> ratingIds;
+	private long dateModified;	
 
-	public Location() {
+	public XLocation() {
+		id = "";
 		name = "";
 		description = "";
 		type = LocationType.DEFAULT;
 		longtitude = 0.0;
 		latitude = 0.0;
 		imageUrls = new ArrayList<String>();
-		planIds = new ArrayList<String>();
 		isShared = true;
 		isPublic = true;
 		dateCreated = System.currentTimeMillis();
 		dateModified = System.currentTimeMillis();
-		likeIds = new ArrayList<String>();
-		commentIds = new ArrayList<String>();
-		ratingIds = new ArrayList<String>();
 	}
 	
-	public String getId(){
-		return _id.toString();
+	public String getId() {
+		return this.id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	public String getName() {
@@ -93,14 +88,6 @@ public class Location extends BaseBean {
 		this.imageUrls = imageUrls;
 	}
 
-	public List<String> getPlanIds() {
-		return this.planIds;
-	}
-
-	public void setPlanIds(List<String> planIds) {
-		this.planIds = planIds;
-	}
-
 	public Boolean getIsShared() {
 		return this.isShared;
 	}
@@ -131,29 +118,5 @@ public class Location extends BaseBean {
 
 	public void setDateModified(long dateModified) {
 		this.dateModified = dateModified;
-	}
-
-	public List<String> getLikeIds() {
-		return this.likeIds;
-	}
-
-	public void setLikeIds(List<String> likeIds) {
-		this.likeIds = likeIds;
-	}
-
-	public List<String> getCommentIds() {
-		return this.commentIds;
-	}
-
-	public void setCommentIds(List<String> commentIds) {
-		this.commentIds = commentIds;
-	}
-
-	public List<String> getRatingIds() {
-		return this.ratingIds;
-	}
-
-	public void setRatingIds(List<String> ratingIds) {
-		this.ratingIds = ratingIds;
 	}
 }
