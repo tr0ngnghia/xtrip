@@ -63,8 +63,8 @@ public class MongoClientFactory {
     protected MongoClientURI getClientURI() {
         MongoClientURI uri = new MongoClientURI(
                 isTest
-                    ? config.getProperty("mongo.test-uri", "mongodb://127.0.0.1:27017/test")
-                    : config.getProperty("mongo.uri", "mongodb://127.0.0.1:27017/play"));
+                    ? config.getProperty("mongo.test-uri", "mongodb://admin:HTik0dL2@SG-xtrip-4111.servers.mongodirector.com:27017/admin")
+                    : config.getProperty("mongo.uri", "mongodb://admin:HTik0dL2@SG-xtrip-4111.servers.mongodirector.com:27017/admin"));
         return uri;
     }
 }
