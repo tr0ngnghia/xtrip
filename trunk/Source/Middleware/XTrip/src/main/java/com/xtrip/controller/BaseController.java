@@ -7,25 +7,29 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.xtrip.model.BaseModel;
 import com.xtrip.model.connectors.JavaJongo;
 import com.xtrip.mongo.CommonConfigurationEntries;
 import com.xtrip.mongo.CommonCoreController;
+import com.xtrip.script.BasicTask;
+import com.xtrip.utils.DateHelper;
 
 /**
  * @author longnh
  */
 public abstract class BaseController {
-	public static String TAG = "";
+	private static final Logger logger = LoggerFactory
+			.getLogger(BaseController.class);
 	public Date start;
 
 	static {
 		synchronized (JavaJongo.class) {
-			Date start = Calendar.getInstance().getTime();
 			Properties conf = CommonCoreController.getConfiguration();
 			conf.setProperty(CommonConfigurationEntries.mongo_uri.getValue(),
-					"mongodb://127.0.0.1:27017/admin");
-//					"mongodb://admin:<Zrx5Lnun>@SG-xtrip-4108.servers.mongodirector.com:27017/admin");
+					"mongodb://admin:HTik0dL2@SG-xtrip-4111.servers.mongodirector.com:27017/admin");
 			conf.setProperty(
 					CommonConfigurationEntries.mongo_gridfs_enabled.getValue(),
 					"false");
@@ -36,19 +40,19 @@ public abstract class BaseController {
 
 	public void ready() {
 		start = Calendar.getInstance().getTime();
-		// Log.info(TAG, "Start at: " + DateHelper.GMT.format(start));
+		logger.info("Start at: " + DateHelper.GMT.format(start));
 	}
 
 	public void stop() {
 		Date stop = Calendar.getInstance().getTime();
-		// Log.info(TAG, "Stop at: " + DateHelper.GMT.format(stop));
+		logger.info("Stop at: " + DateHelper.GMT.format(stop));
 		Long interval = (stop.getTime() - start.getTime()) / 1000;
 		Long hours = interval / 3600;
 		Long minutes = interval / 60 - hours * 60;
 		Long seconds = interval - hours * 3600 - minutes * 60;
-		// Log.info(TAG,
-		// String.format("Running time: %d hour, %d minute, %d seconds", hours,
-		// minutes, seconds));
+		logger.info(String.format(
+				"Running time: %d hour, %d minute, %d seconds", hours, minutes,
+				seconds));
 	}
 
 	public abstract void run();
