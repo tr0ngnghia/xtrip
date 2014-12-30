@@ -137,28 +137,27 @@ public class LocationController{
 	
 	@RequestMapping("/create")
 	public @ResponseBody
-	XResponse create(@RequestParam(value = "name", required = false) String name,
-			 		 @RequestParam(value = "desc", required = false) String desc,
-			 		 @RequestParam(value = "lat", defaultValue = "0") Double lat,
-			 		 @RequestParam(value = "lng", defaultValue = "0") Double lng){
+	XResponse create(@RequestParam(value = "data", required = false) String data){
 		try{
 			XResponse res = new XResponse();
 			
-			if(name == null || desc == null){
+			if(data == null || data.isEmpty()){
 				return CommonResponse.MISSING_PARAM;						
-			}
+			}	
 			
-			if(name.isEmpty() || desc.isEmpty()){
-				return CommonResponse.INVALID_PARAM;
-			}		
+			ObjectMapper mapper = new ObjectMapper();
+			XLocation xLocation = mapper.readValue(data, XLocation.class);
 			
 			Location mLocation = new Location();
-			mLocation.setName(name);
-			mLocation.setDescription(desc);
-			mLocation.setDateCreated(System.currentTimeMillis());
 			mLocation.setDateModified(System.currentTimeMillis());
-			mLocation.setLatitude(lat);
-			mLocation.setLongtitude(lng);
+			mLocation.setName(xLocation.getName());
+			mLocation.setDescription(xLocation.getShortDesc());
+			mLocation.setLatitude(xLocation.getLat());
+			mLocation.setLongtitude(xLocation.getLng());
+			mLocation.setImageUrls(xLocation.getGalary());
+			mLocation.setIsPublic(xLocation.getIsPublic());
+			mLocation.setIsShared(xLocation.getIsShared());
+			mLocation.setType(xLocation.getType());
 			LocationModel.getInstance().set(mLocation);
 			
 			res.setData(toXLocation(mLocation));
@@ -310,6 +309,10 @@ public class LocationController{
 			ret.setIsPublic(mLocation.getIsPublic());
 			ret.setIsShared(mLocation.getIsShared());
 			ret.setGalary(mLocation.getImageUrls());
+			ret.setAddress("");
+			ret.setPhone("");
+			ret.setFax("");
+			ret.setPostCode(0);
 		}
 		
 		return ret;

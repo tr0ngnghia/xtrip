@@ -22,6 +22,10 @@ public class XLocation {
 	private int rating;
 	private int visit;
 	private float price;
+	private String address;
+	private String phone;
+	private String fax;
+	private int postCode;
 
 	public XLocation() {
 		id = "";
@@ -40,6 +44,10 @@ public class XLocation {
 		rating = 0;
 		visit = 0;
 		price = 0;
+		address = "";
+		phone = "";
+		fax = "";
+		postCode = 0;
 	}
 	
 	public String getId() {
@@ -168,5 +176,37 @@ public class XLocation {
 
 	public void setPrice(long price) {
 		this.price = price;
+	}
+	
+	public int getPostCode() {
+		return this.postCode;
+	}
+
+	public void setPostCode(int postCode) {
+		this.postCode = postCode;
+	}
+	
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	public String getPhone() {
+		return this.phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	public String getFax() {
+		return this.fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
 	}
 }
