@@ -99,7 +99,6 @@ public class LocationModel extends BaseModel {
 				"{}", "{_id : 1}");
 		for (Location location : locations) {
 			res.add(location._id);
-
 		}
 		return res;
 	}

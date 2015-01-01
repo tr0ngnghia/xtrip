@@ -10,7 +10,7 @@ import com.xtrip.common.Common.LocationType;
  */
 public class Location extends BaseBean {
 	private String name;
-	private String description;
+	private String description; 
 	private LocationType type;
 	private Double longtitude;
 	private Double latitude;
@@ -23,6 +23,13 @@ public class Location extends BaseBean {
 	private List<String> likeIds;
 	private List<String> commentIds;
 	private List<String> ratingIds;
+	private String address;
+	private String phone;
+	private String fax;
+	private int postCode;
+	private String email;
+	private String website;
+	private int purchase;
 
 	public Location() {
 		name = "";
@@ -39,6 +46,13 @@ public class Location extends BaseBean {
 		likeIds = new ArrayList<String>();
 		commentIds = new ArrayList<String>();
 		ratingIds = new ArrayList<String>();
+		address = "";
+		phone = "";
+		fax = "";
+		postCode = 0;
+		email = "";
+		website = "";
+		purchase = 0;
 	}
 	
 	public String getId(){
@@ -155,5 +169,61 @@ public class Location extends BaseBean {
 
 	public void setRatingIds(List<String> ratingIds) {
 		this.ratingIds = ratingIds;
+	}
+	
+	public String getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	public String getPhone() {
+		return this.phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
+	public String getFax() {
+		return this.fax;
+	}
+
+	public void setFax(String fax) {
+		this.fax = fax;
+	}
+	
+	public int getPostCode() {
+		return this.postCode;
+	}
+
+	public void setPostCode(int postCode) {
+		this.postCode = postCode;
+	}
+	
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getWebsite() {
+		return this.website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+	
+	public int getPurchase() {
+		return this.purchase;
+	}
+
+	public void setPurchase(int purchase) {
+		this.purchase = purchase;
 	}
 }
