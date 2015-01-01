@@ -99,7 +99,6 @@ public class PlanModel extends BaseModel {
 				"{_id : 1}");
 		for (Plan plan : plans) {
 			res.add(plan._id);
-
 		}
 		return res;
 	}
