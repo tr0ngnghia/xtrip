@@ -11,6 +11,7 @@ import com.xtrip.common.Common.LocationType;
 public class Location extends BaseBean {
 	private String name;
 	private String description; 
+	private String shortDesc;
 	private LocationType type;
 	private Double longtitude;
 	private Double latitude;
@@ -34,6 +35,7 @@ public class Location extends BaseBean {
 	public Location() {
 		name = "";
 		description = "";
+		shortDesc = "";
 		type = LocationType.DEFAULT;
 		longtitude = 0.0;
 		latitude = 0.0;
@@ -73,6 +75,14 @@ public class Location extends BaseBean {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public String getShortDesc() {
+		return this.shortDesc;
+	}
+
+	public void setShortDesc(String shortDesc) {
+		this.shortDesc = shortDesc;
 	}
 
 	public LocationType getType() {
