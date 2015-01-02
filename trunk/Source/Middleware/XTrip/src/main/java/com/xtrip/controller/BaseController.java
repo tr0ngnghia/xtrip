@@ -14,7 +14,6 @@ import com.xtrip.model.BaseModel;
 import com.xtrip.model.connectors.JavaJongo;
 import com.xtrip.mongo.CommonConfigurationEntries;
 import com.xtrip.mongo.CommonCoreController;
-import com.xtrip.script.BasicTask;
 import com.xtrip.utils.DateHelper;
 
 /**
