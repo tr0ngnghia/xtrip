@@ -26,7 +26,7 @@ public class Location extends BaseBean {
 	private String address;
 	private String phone;
 	private String fax;
-	private int postCode;
+	private String postCode;
 	private String email;
 	private String website;
 	private int purchase;
@@ -49,7 +49,7 @@ public class Location extends BaseBean {
 		address = "";
 		phone = "";
 		fax = "";
-		postCode = 0;
+		postCode = "0";
 		email = "";
 		website = "";
 		purchase = 0;
@@ -195,11 +195,11 @@ public class Location extends BaseBean {
 		this.fax = fax;
 	}
 	
-	public int getPostCode() {
+	public String getPostCode() {
 		return this.postCode;
 	}
 
-	public void setPostCode(int postCode) {
+	public void setPostCode(String postCode) {
 		this.postCode = postCode;
 	}
 	
