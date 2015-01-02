@@ -25,7 +25,7 @@ public class XLocation {
 	private String address;
 	private String phone;
 	private String fax;
-	private int postCode;
+	private String postCode;
 	private String email;
 	private String website;
 
@@ -49,7 +49,7 @@ public class XLocation {
 		address = "";
 		phone = "";
 		fax = "";
-		postCode = 0;
+		postCode = "";
 		email = "";
 		website = "";
 	}
@@ -182,11 +182,11 @@ public class XLocation {
 		this.price = price;
 	}
 	
-	public int getPostCode() {
+	public String getPostCode() {
 		return this.postCode;
 	}
 
-	public void setPostCode(int postCode) {
+	public void setPostCode(String postCode) {
 		this.postCode = postCode;
 	}
 	

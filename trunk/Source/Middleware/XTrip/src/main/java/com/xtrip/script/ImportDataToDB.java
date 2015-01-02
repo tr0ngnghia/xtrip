@@ -218,8 +218,7 @@ public class ImportDataToDB extends BasicTask {
 										System.out.println(lng);
 									// PostCode
 									case 11:
-										int postCode = Integer.valueOf(cell
-												.getStringCellValue());
+										String postCode = cell.getStringCellValue();
 										location.setPostCode(postCode);
 										System.out.println(postCode);
 										break;
