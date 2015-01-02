@@ -165,6 +165,8 @@ public class LocationController{
 			mLocation.setEmail(xLocation.getEmail());
 			mLocation.setWebsite(xLocation.getWebsite());
 			
+			LocationModel.getInstance().set(mLocation);
+			
 			res.setData(toXLocation(mLocation));
 			return res;
 		}catch(Exception ex){
