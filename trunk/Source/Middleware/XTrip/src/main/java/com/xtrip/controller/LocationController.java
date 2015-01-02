@@ -158,7 +158,12 @@ public class LocationController{
 			mLocation.setIsPublic(xLocation.getIsPublic());
 			mLocation.setIsShared(xLocation.getIsShared());
 			mLocation.setType(xLocation.getType());
-			LocationModel.getInstance().set(mLocation);
+			mLocation.setAddress(xLocation.getAddress());
+			mLocation.setPhone(xLocation.getPhone());
+			mLocation.setFax(xLocation.getFax());
+			mLocation.setPostCode(xLocation.getPostCode());
+			mLocation.setEmail(xLocation.getEmail());
+			mLocation.setWebsite(xLocation.getWebsite());
 			
 			res.setData(toXLocation(mLocation));
 			return res;
@@ -199,6 +204,14 @@ public class LocationController{
 			mLocation.setIsPublic(xLocation.getIsPublic());
 			mLocation.setIsShared(xLocation.getIsShared());
 			mLocation.setType(xLocation.getType());
+			mLocation.setAddress(xLocation.getAddress());
+			mLocation.setPhone(xLocation.getPhone());
+			mLocation.setAddress(xLocation.getAddress());
+			mLocation.setPhone(xLocation.getPhone());
+			mLocation.setFax(xLocation.getFax());
+			mLocation.setPostCode(xLocation.getPostCode());
+			mLocation.setEmail(xLocation.getEmail());
+			mLocation.setWebsite(xLocation.getWebsite());
 			
 			LocationModel.getInstance().set(mLocation);
 			res.setData(toXLocation(mLocation));
@@ -309,10 +322,12 @@ public class LocationController{
 			ret.setIsPublic(mLocation.getIsPublic());
 			ret.setIsShared(mLocation.getIsShared());
 			ret.setGalary(mLocation.getImageUrls());
-			ret.setAddress("");
-			ret.setPhone("");
-			ret.setFax("");
-			ret.setPostCode(0);
+			ret.setAddress(mLocation.getAddress());
+			ret.setPhone(mLocation.getPhone());
+			ret.setFax(mLocation.getFax());
+			ret.setPostCode(mLocation.getPostCode());
+			ret.setEmail(mLocation.getEmail());
+			ret.setWebsite(mLocation.getWebsite());
 		}
 		
 		return ret;

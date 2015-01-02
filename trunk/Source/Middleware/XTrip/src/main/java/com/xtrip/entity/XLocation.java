@@ -26,6 +26,8 @@ public class XLocation {
 	private String phone;
 	private String fax;
 	private int postCode;
+	private String email;
+	private String website;
 
 	public XLocation() {
 		id = "";
@@ -48,6 +50,8 @@ public class XLocation {
 		phone = "";
 		fax = "";
 		postCode = 0;
+		email = "";
+		website = "";
 	}
 	
 	public String getId() {
@@ -208,5 +212,21 @@ public class XLocation {
 
 	public void setFax(String fax) {
 		this.fax = fax;
+	}
+	
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public String getWebsite() {
+		return this.website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
 	}
 }
