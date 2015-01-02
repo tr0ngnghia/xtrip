@@ -139,7 +139,8 @@ public class LocationController{
 			Location mLocation = new Location();
 			mLocation.setDateModified(System.currentTimeMillis());
 			mLocation.setName(xLocation.getName());
-			mLocation.setDescription(xLocation.getShortDesc());
+			mLocation.setDescription(xLocation.getLongDesc());
+			mLocation.setShortDesc(xLocation.getShortDesc());
 			mLocation.setLatitude(xLocation.getLat());
 			mLocation.setLongtitude(xLocation.getLng());
 			mLocation.setImageUrls(xLocation.getGalary());
@@ -187,7 +188,8 @@ public class LocationController{
 			
 			mLocation.setDateModified(System.currentTimeMillis());
 			mLocation.setName(xLocation.getName());
-			mLocation.setDescription(xLocation.getShortDesc());
+			mLocation.setDescription(xLocation.getLongDesc());
+			mLocation.setShortDesc(xLocation.getShortDesc());
 			mLocation.setLatitude(xLocation.getLat());
 			mLocation.setLongtitude(xLocation.getLng());
 			mLocation.setImageUrls(xLocation.getGalary());
@@ -236,7 +238,8 @@ public class LocationController{
 		if(mLocation != null){
 			ret.setId(mLocation.getId());
 			ret.setName(mLocation.getName());
-			ret.setShortDesc(mLocation.getDescription());
+			ret.setLongDesc(mLocation.getDescription());
+			ret.setShortDesc(mLocation.getShortDesc());
 			ret.setLat(mLocation.getLatitude());
 			ret.setLng(mLocation.getLongtitude());
 			ret.setType(mLocation.getType());
