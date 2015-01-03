@@ -216,7 +216,7 @@ public class ImportDataToDB extends BasicTask {
 												.getStringCellValue());
 										location.setLongtitude(lng);
 										System.out.println(lng);
-									// PostCode
+										// PostCode
 									case 11:
 										String postCode = cell.getStringCellValue();
 										location.setPostCode(postCode);
@@ -238,7 +238,7 @@ public class ImportDataToDB extends BasicTask {
 	@Override
 	public void run() {
 		this.init();
-		this.importLocationDataFromJSON();
+		// this.importLocationDataFromJSON();
 		this.importLocationDataFromExcel();
 	}
 
