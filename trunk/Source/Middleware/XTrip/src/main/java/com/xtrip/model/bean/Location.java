@@ -10,7 +10,7 @@ import com.xtrip.common.Common.LocationType;
  */
 public class Location extends BaseBean {
 	private String name;
-	private String description; 
+	private String description;
 	private String shortDesc;
 	private LocationType type;
 	private Double longtitude;
@@ -31,6 +31,10 @@ public class Location extends BaseBean {
 	private String email;
 	private String website;
 	private int purchase;
+	private long utils;
+	private int capacity;
+	private byte star;
+	private int room;
 
 	public Location() {
 		name = "";
@@ -55,12 +59,16 @@ public class Location extends BaseBean {
 		email = "";
 		website = "";
 		purchase = 0;
+		utils = 0;
+		capacity = 0;
+		star = '1';
+		room = 0;
 	}
-	
-	public String getId(){
+
+	public String getId() {
 		return _id.toString();
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
@@ -76,7 +84,7 @@ public class Location extends BaseBean {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public String getShortDesc() {
 		return this.shortDesc;
 	}
@@ -180,7 +188,7 @@ public class Location extends BaseBean {
 	public void setRatingIds(List<String> ratingIds) {
 		this.ratingIds = ratingIds;
 	}
-	
+
 	public String getAddress() {
 		return this.address;
 	}
@@ -188,7 +196,7 @@ public class Location extends BaseBean {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
+
 	public String getPhone() {
 		return this.phone;
 	}
@@ -196,7 +204,7 @@ public class Location extends BaseBean {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
 	public String getFax() {
 		return this.fax;
 	}
@@ -204,7 +212,7 @@ public class Location extends BaseBean {
 	public void setFax(String fax) {
 		this.fax = fax;
 	}
-	
+
 	public String getPostCode() {
 		return this.postCode;
 	}
@@ -212,7 +220,7 @@ public class Location extends BaseBean {
 	public void setPostCode(String postCode) {
 		this.postCode = postCode;
 	}
-	
+
 	public String getEmail() {
 		return this.email;
 	}
@@ -220,7 +228,7 @@ public class Location extends BaseBean {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public String getWebsite() {
 		return this.website;
 	}
@@ -235,5 +243,37 @@ public class Location extends BaseBean {
 
 	public void setPurchase(int purchase) {
 		this.purchase = purchase;
+	}
+
+	public long getUtils() {
+		return this.utils;
+	}
+
+	public void setUtils(long utils) {
+		this.utils = utils;
+	}
+	
+	public int getCapacity() {
+		return this.capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+	
+	public byte getStar() {
+		return this.star;
+	}
+
+	public void setStar(byte star) {
+		this.star = star;
+	}
+	
+	public int getRoom() {
+		return this.room;
+	}
+
+	public void setRoom(int room) {
+		this.room = room;
 	}
 }
