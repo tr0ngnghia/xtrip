@@ -153,6 +153,11 @@ public class LocationController{
 			mLocation.setPostCode(xLocation.getPostCode());
 			mLocation.setEmail(xLocation.getEmail());
 			mLocation.setWebsite(xLocation.getWebsite());
+			mLocation.setPurchase(xLocation.getPurchase());
+			mLocation.setUtils(xLocation.getUtils());
+			mLocation.setCapacity(xLocation.getCapacity());
+			mLocation.setStar(xLocation.getStar());
+			mLocation.setRoom(xLocation.getRoom());
 			
 			LocationModel.getInstance().set(mLocation);
 			
@@ -204,6 +209,11 @@ public class LocationController{
 			mLocation.setPostCode(xLocation.getPostCode());
 			mLocation.setEmail(xLocation.getEmail());
 			mLocation.setWebsite(xLocation.getWebsite());
+			mLocation.setPurchase(xLocation.getPurchase());
+			mLocation.setUtils(xLocation.getUtils());
+			mLocation.setCapacity(xLocation.getCapacity());
+			mLocation.setStar(xLocation.getStar());
+			mLocation.setRoom(xLocation.getRoom());
 			
 			LocationModel.getInstance().set(mLocation);
 			res.setData(toXLocation(mLocation));
@@ -254,6 +264,11 @@ public class LocationController{
 			ret.setPostCode(mLocation.getPostCode());
 			ret.setEmail(mLocation.getEmail());
 			ret.setWebsite(mLocation.getWebsite());
+			ret.setPurchase(mLocation.getPurchase());
+			ret.setUtils(mLocation.getUtils());
+			ret.setCapacity(mLocation.getCapacity());
+			ret.setStar(mLocation.getStar());
+			ret.setRoom(mLocation.getRoom());
 		}
 		
 		return ret;
