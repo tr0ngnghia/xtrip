@@ -323,6 +323,11 @@ public class ScriptController {
 			ret.setPostCode(mLocation.getPostCode());
 			ret.setEmail(mLocation.getEmail());
 			ret.setWebsite(mLocation.getWebsite());
+			ret.setPurchase(mLocation.getPurchase());
+			ret.setUtils(mLocation.getUtils());
+			ret.setCapacity(mLocation.getCapacity());
+			ret.setStar(mLocation.getStar());
+			ret.setRoom(mLocation.getRoom());
 		}
 		
 		return ret;

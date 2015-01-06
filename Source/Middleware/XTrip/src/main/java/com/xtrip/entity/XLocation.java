@@ -28,6 +28,12 @@ public class XLocation {
 	private String postCode;
 	private String email;
 	private String website;
+	private int purchase;
+	private long utils;
+	private int capacity;
+	private byte star;
+	private int room;
+	
 
 	public XLocation() {
 		id = "";
@@ -52,6 +58,11 @@ public class XLocation {
 		postCode = "";
 		email = "";
 		website = "";
+		purchase = 0;
+		utils = 0;
+		capacity = 0;
+		star = 0;
+		room = 0;
 	}
 	
 	public String getId() {
@@ -228,5 +239,45 @@ public class XLocation {
 
 	public void setWebsite(String website) {
 		this.website = website;
+	}
+	
+	public int getPurchase() {
+		return this.purchase;
+	}
+
+	public void setPurchase(int purchase) {
+		this.purchase = purchase;
+	}
+	
+	public long getUtils() {
+		return this.utils;
+	}
+
+	public void setUtils(long utils) {
+		this.utils = utils;
+	}
+	
+	public int getCapacity() {
+		return this.capacity;
+	}
+
+	public void setCapacity(int capacity) {
+		this.capacity = capacity;
+	}
+	
+	public byte getStar() {
+		return this.star;
+	}
+
+	public void setStar(byte star) {
+		this.star = star;
+	}
+	
+	public int getRoom() {
+		return this.room;
+	}
+
+	public void setRoom(int room) {
+		this.room = room;
 	}
 }
