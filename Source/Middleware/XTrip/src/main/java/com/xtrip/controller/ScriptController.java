@@ -121,7 +121,7 @@ public class ScriptController {
 				List<Location> mLocations = LocationModel.getInstance().multiGet(ids);
 				if(mLocations != null){
 					for(Location mLocation : mLocations){
-						mLocation.setPostCode("6800000000");
+						mLocation.setType(0L);
 						boolean err = LocationModel.getInstance().set(mLocation);
 						result.add(err);
 					}
@@ -184,32 +184,32 @@ public class ScriptController {
 										switch (c) {
 										// Type
 										case 0:
-											String type = cell.getStringCellValue();
-											if (type.equalsIgnoreCase("HOTEL")) {
-												location.setType(LocationType.HOTEL);
-											} else if (type
-													.equalsIgnoreCase("RESTAURANT")) {
-												location.setType(LocationType.RESTAURANT);
-											} else if (type
-													.equalsIgnoreCase("SHOP")) {
-												location.setType(LocationType.SHOP);
-											} else if (type
-													.equalsIgnoreCase("SUPERMARKET")) {
-												location.setType(LocationType.SUPERMARKET);
-											} else if (type
-													.equalsIgnoreCase("BANK")) {
-												location.setType(LocationType.BANK);
-											} else if (type
-													.equalsIgnoreCase("TRAVEL_COMPANY")) {
-												location.setType(LocationType.TRAVEL_COMPANY);
-											} else if (type
-													.equalsIgnoreCase("TRANSPORT")) {
-												location.setType(LocationType.TRANSPORT);
-											} else if (type
-													.equalsIgnoreCase("TRAVEL")) {
-												location.setType(LocationType.TRAVEL);
-											}
-											System.out.println(type);
+//											String type = cell.getStringCellValue();
+//											if (type.equalsIgnoreCase("HOTEL")) {
+//												location.setType(LocationType.HOTEL);
+//											} else if (type
+//													.equalsIgnoreCase("RESTAURANT")) {
+//												location.setType(LocationType.RESTAURANT);
+//											} else if (type
+//													.equalsIgnoreCase("SHOP")) {
+//												location.setType(LocationType.SHOP);
+//											} else if (type
+//													.equalsIgnoreCase("SUPERMARKET")) {
+//												location.setType(LocationType.SUPERMARKET);
+//											} else if (type
+//													.equalsIgnoreCase("BANK")) {
+//												location.setType(LocationType.BANK);
+//											} else if (type
+//													.equalsIgnoreCase("TRAVEL_COMPANY")) {
+//												location.setType(LocationType.TRAVEL_COMPANY);
+//											} else if (type
+//													.equalsIgnoreCase("TRANSPORT")) {
+//												location.setType(LocationType.TRANSPORT);
+//											} else if (type
+//													.equalsIgnoreCase("TRAVEL")) {
+//												location.setType(LocationType.TRAVEL);
+//											}
+//											System.out.println(type);
 											break;
 										// Name
 										case 1:

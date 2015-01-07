@@ -12,7 +12,7 @@ public class Location extends BaseBean {
 	private String name;
 	private String description;
 	private String shortDesc;
-	private LocationType type;
+	private long type;
 	private Double longtitude;
 	private Double latitude;
 	private List<String> imageUrls;
@@ -40,7 +40,7 @@ public class Location extends BaseBean {
 		name = "";
 		description = "";
 		shortDesc = "";
-		type = LocationType.DEFAULT;
+		type = 0;
 		longtitude = 0.0;
 		latitude = 0.0;
 		imageUrls = new ArrayList<String>();
@@ -93,11 +93,11 @@ public class Location extends BaseBean {
 		this.shortDesc = shortDesc;
 	}
 
-	public LocationType getType() {
+	public long getType() {
 		return this.type;
 	}
 
-	public void setType(LocationType type) {
+	public void setType(long type) {
 		this.type = type;
 	}
 

@@ -3,14 +3,12 @@ package com.xtrip.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.xtrip.common.Common.LocationType;
-
 public class XLocation {
 	private String id;
 	private String name;
 	private String shortDesc;
 	private String longDesc;
-	private LocationType type;
+	private long type;
 	private Double lng;
 	private Double lat;
 	private String avatar;
@@ -40,7 +38,7 @@ public class XLocation {
 		name = "";
 		shortDesc = "";
 		longDesc = "";
-		type = LocationType.DEFAULT;
+		type = 0;
 		lng = 0.0;
 		lat = 0.0;
 		avatar = "";
@@ -105,11 +103,11 @@ public class XLocation {
 		this.avatar = avatar;
 	}
 	
-	public LocationType getType() {
+	public long getType() {
 		return this.type;
 	}
 
-	public void setType(LocationType type) {
+	public void setType(long type) {
 		this.type = type;
 	}
 

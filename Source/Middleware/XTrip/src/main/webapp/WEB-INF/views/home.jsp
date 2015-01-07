@@ -8,13 +8,19 @@
 </head>
 <body>
 	<center>
-		<h1>Xtrip API Reference Guide is now available at 
-		<br>
-		<a href="https://code.google.com/p/x-trip/source/browse/trunk/Document/APIReference/XTripAPIReference.pdf">
-		https://code.google.com/p/x-trip/source/browse/trunk/Document/APIReference/XTripAPIReference.pdf
+	<h1>
+		<a href="https://code.google.com/p/x-trip/source/browse/trunk/Document/APIReference/">
+			Xtrip API Reference Guide 
 		</a>
-		</h1>		
-	</center>		
+	</h1>
+	</center>
+	
+	<br><br><b>Update 08.01.2015:</b>
+	<br>- Some API for enumaration
+	
+	<br><br><b>Update 30.12.2014:</b>
+	<br>- Some API for location
+
 </body>
 </html>
 	
