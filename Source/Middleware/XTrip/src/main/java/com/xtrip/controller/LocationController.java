@@ -57,30 +57,8 @@ public class LocationController{
 		}catch(Exception ex){
 			return CommonResponse.SERVER_ERROR;
 		}
-	}
-	
-	@RequestMapping("/getAll")
-	public @ResponseBody
-	XResponse getAll() {
-		try{
-			XResponse res = new XResponse();
-			List<ObjectId> ids = LocationModel.getInstance().getAllLocationIds();
-			if(ids != null){
-				List<XLocation> xLocations = new ArrayList<XLocation>();
-				List<Location> mLocations = LocationModel.getInstance().multiGet(ids);
-				if(mLocations != null){
-					for(Location mLocation : mLocations){
-						xLocations.add(toXLocation(mLocation));
-					}
-				}
-				res.setData(xLocations);
-			}		
-			return res;
-		}catch(Exception ex){
-			return CommonResponse.SERVER_ERROR;
-		}
-	}
-	
+	}	
+		
 	@RequestMapping("/getAllIds")
 	public @ResponseBody
 	XResponse getAllIds() {
@@ -104,6 +82,12 @@ public class LocationController{
 					   @RequestParam(value = "count", defaultValue = "10") int count){
 		try{
 			XResponse res = new XResponse();
+			
+			//limit number of item each request
+			if(count > 100){
+				count = 100;
+			}
+			
 			List<ObjectId> ids = LocationModel.getInstance().getAllLocationIds();
 			if(ids != null){
 				List<XLocation> xLocations = new ArrayList<XLocation>();

@@ -1,6 +1,7 @@
 package com.xtrip.script;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +13,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
 
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -33,6 +38,8 @@ public class ImportDataToDB extends BasicTask {
 			.getLogger(ImportDataToDB.class);
 	private Map<FileType, String> jsonFiles = new HashMap<FileType, String>();
 	private List<String> excelFiles = new ArrayList<String>();
+	private List<String> provinces = new ArrayList<String>();
+	
 
 	private enum FileType {
 		LOCATIONS
@@ -41,12 +48,25 @@ public class ImportDataToDB extends BasicTask {
 	private void init() {
 		jsonFiles.put(FileType.LOCATIONS, "data/json/locations.json");
 
-		excelFiles.add("data/excel/BinhDinh-Restaurant-Cafe_Template.xlsx");
-		excelFiles.add("data/excel/BinhDinh-Shop_Template.xlsx");
-		excelFiles.add("data/excel/BinhDinh-TourCompany_Template.xlsx");
-		excelFiles.add("data/excel/BinhDinh-Transport_Template.xlsx");
-		excelFiles.add("data/excel/BinhDinh-Travel_Template.xlsx");
-		excelFiles.add("data/excel/BinhDinh-Hotel_Template.xlsx");
+		provinces.add("BinhDinh");
+		provinces.add("BinhThuan");
+		provinces.add("DaNang");
+		provinces.add("KhanhHoa");
+		provinces.add("NinhThuan");
+		provinces.add("PhuYen");
+		provinces.add("QuangNam");
+		provinces.add("QuangNgai");
+		provinces.add("Hue");
+		
+		for(String province : provinces){
+			excelFiles.add("data/excel/" + province + "/" + province + "-Restaurant-Cafe_Template.xls");
+			excelFiles.add("data/excel/" + province + "/" + province + "-Shop_Template.xls");
+			excelFiles.add("data/excel/" + province + "/" + province + "-Sport_Template.xls");
+			excelFiles.add("data/excel/" + province + "/" + province + "-TourCompany_Template.xls");
+			excelFiles.add("data/excel/" + province + "/" + province + "-Transport_Template.xls");
+			excelFiles.add("data/excel/" + province + "/" + province + "-Travel_Template.xls");
+			excelFiles.add("data/excel/" + province + "/" + province + "-Hotel_Template.xls");
+		}
 	}
 
 	private String loadFile(String path) {
@@ -103,61 +123,64 @@ public class ImportDataToDB extends BasicTask {
 	private void importLocationDataFromExcel() {
 		try {
 			for (String file : excelFiles) {
-				InputStream is = new FileInputStream(file);
-				XSSFWorkbook wb = new XSSFWorkbook(is);
-				XSSFSheet sheet = wb.getSheetAt(0);
-				XSSFRow row;
-				XSSFCell cell;
-
-				int rows = sheet.getPhysicalNumberOfRows();
-
-				int cols = 0; // No of columns
-
-				for (int r = 1; r < rows; r++) {
-					row = sheet.getRow(r);
-					if (row != null) {
-						Location location = new Location();
-						cols = sheet.getRow(r).getPhysicalNumberOfCells();
-						for (int c = 0; c < cols; c++) {
-							cell = row.getCell(c);
+				File inputWorkbook = new File(file);
+				if(!inputWorkbook.isFile()){
+					continue;
+				}		
+			    Workbook wb = Workbook.getWorkbook(inputWorkbook);
+			 
+			    
+			    Sheet sheet = wb.getSheet(0);
+			    for (int i = 1; i < sheet.getRows(); i++) {			    
+			    	Location location = new Location();
+			    	for (int j = 0; j < sheet.getColumns(); j++) {
+			          Cell cell = sheet.getCell(j, i);
 							if (cell != null) {
-								if (!cell.getStringCellValue()
-										.equalsIgnoreCase("")) {
-									switch (c) {
+								if (!cell.getContents().equalsIgnoreCase("")) {
+									switch (j) {
 									// Type
 									case 0:
-//										String type = cell.getStringCellValue();
-//										if (type.equalsIgnoreCase("HOTEL")) {
-//											location.setType(LocationType.HOTEL);
-//										} else if (type
-//												.equalsIgnoreCase("RESTAURANT")) {
-//											location.setType(LocationType.RESTAURANT);
-//										} else if (type
-//												.equalsIgnoreCase("SHOP")) {
-//											location.setType(LocationType.SHOP);
-//										} else if (type
-//												.equalsIgnoreCase("SUPERMARKET")) {
-//											location.setType(LocationType.SUPERMARKET);
-//										} else if (type
-//												.equalsIgnoreCase("BANK")) {
-//											location.setType(LocationType.BANK);
-//										} else if (type
-//												.equalsIgnoreCase("TRAVEL_COMPANY")) {
-//											location.setType(LocationType.TRAVEL_COMPANY);
-//										} else if (type
-//												.equalsIgnoreCase("TRANSPORT")) {
-//											location.setType(LocationType.TRANSPORT);
-//										} else if (type
-//												.equalsIgnoreCase("TRAVEL")) {
-//											location.setType(LocationType.TRAVEL);
-//										}
-//										System.out.println(type);
+										String type = cell.getContents();
+										if (type.equalsIgnoreCase("HOTEL")) {
+											location.setType(new Double(Math.pow(2,1)).longValue());
+										} else if (type.equalsIgnoreCase("RESTAURANT")) {
+											location.setType(new Double(Math.pow(2,4)).longValue());
+										} else if (type.equalsIgnoreCase("SHOP")) {
+											location.setType(new Double(Math.pow(2,49)).longValue());
+										} else if (type.equalsIgnoreCase("SUPERMARKET")) {
+											location.setType(new Double(Math.pow(2,22)).longValue());
+										} else if (type.equalsIgnoreCase("BANK")) {
+											location.setType(new Double(Math.pow(2,12)).longValue());
+										} else if (type.equalsIgnoreCase("TRAVEL_COMPANY")) {
+											location.setType(new Double(Math.pow(2,50)).longValue());
+										} else if (type.equalsIgnoreCase("TRANSPORT")) {
+											location.setType(new Double(Math.pow(2,51)).longValue());
+										} else if (type.equalsIgnoreCase("TRAVEL")) {
+											location.setType(new Double(Math.pow(2,46)).longValue());
+										}else if (type.equalsIgnoreCase("CAFE")) {
+											location.setType(new Double(Math.pow(2,5)).longValue());
+										}else if (type.equalsIgnoreCase("BAR")) {
+											location.setType(new Double(Math.pow(2,20)).longValue());
+										}else if (type.equalsIgnoreCase("KARAOKE")) {
+											location.setType(new Double(Math.pow(2,29)).longValue());
+										}else if (type.equalsIgnoreCase("MALL")) {
+											location.setType(new Double(Math.pow(2,47)).longValue());
+										}else if (type.equalsIgnoreCase("MARKET")) {
+											location.setType(new Double(Math.pow(2,23)).longValue());
+										}else if (type.equalsIgnoreCase("SPA")) {
+											location.setType(new Double(Math.pow(2,31)).longValue());
+										}else if (type.equalsIgnoreCase("TEAROOM")) {
+											location.setType(new Double(Math.pow(2,38)).longValue());
+										}else if (type.equalsIgnoreCase("ATM")) {
+											location.setType(new Double(Math.pow(2,11)).longValue());
+										}
+										System.out.print(type);
 										break;
 									// Name
 									case 1:
-										String name = cell.getStringCellValue();
+										String name = cell.getContents();
 										location.setName(name);
-										System.out.println(name);
+										System.out.print(name);
 										break;
 									// Short Description
 									case 2:
@@ -165,74 +188,78 @@ public class ImportDataToDB extends BasicTask {
 									// Long Description
 									case 3:
 										String longDescription = cell
-												.getStringCellValue();
+												.getContents();
 										location.setDescription(longDescription);
-										System.out.println(longDescription);
+										System.out.print(longDescription);
 										break;
 									// Address
 									case 4:
 										String address = cell
-												.getStringCellValue();
+												.getContents();
 										location.setAddress(address);
-										System.out.println(address);
+										System.out.print(address);
 										break;
 									// Phone
 									case 5:
 										String phone = cell
-												.getStringCellValue();
+												.getContents();
 										location.setPhone(phone);
-										System.out.println(phone);
+										System.out.print(phone);
 										break;
 									// Fax
 									case 6:
-										String fax = cell.getStringCellValue();
+										String fax = cell.getContents();
 										location.setFax(fax);
-										System.out.println(fax);
+										System.out.print(fax);
 										break;
 									// Email
 									case 7:
 										String email = cell
-												.getStringCellValue();
+												.getContents();
 										location.setEmail(email);
-										System.out.println(email);
+										System.out.print(email);
 										break;
 									// Web
 									case 8:
 										String website = cell
-												.getStringCellValue();
+												.getContents();
 										location.setWebsite(website);
-										System.out.println(website);
+										System.out.print(website);
 										break;
 									// Lat
 									case 9:
 										Double lat = Double.valueOf(cell
-												.getStringCellValue());
+												.getContents());
 										location.setLatitude(lat);
-										System.out.println(lat);
+										System.out.print(lat);
 										break;
 									// Lng
 									case 10:
 										Double lng = Double.valueOf(cell
-												.getStringCellValue());
+												.getContents());
 										location.setLongtitude(lng);
-										System.out.println(lng);
+										System.out.print(lng);
 										// PostCode
 									case 11:
-										String postCode = cell.getStringCellValue();
+										String postCode = cell.getContents();
 										location.setPostCode(postCode);
-										System.out.println(postCode);
+										System.out.print(postCode);
 										break;
 									}
 								}
 							}
 						}
-						LocationModel.getInstance().set(location);
+			    		if(!location.getName().isEmpty()){
+			    			boolean err = LocationModel.getInstance().set(location);
+			    			System.out.println("");
+			    			System.out.println("------------------------------------:" + err);
+			    		}
 					}
-				}
-			}
+				}			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+		System.out.println("done");
 	}
 
 	@Override

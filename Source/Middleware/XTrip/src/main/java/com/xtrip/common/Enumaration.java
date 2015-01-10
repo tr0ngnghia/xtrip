@@ -13,6 +13,7 @@ public class Enumaration {
 			"TrainStation","CarStation","BusStation","Hospital","Karaoke","Massage","Spa","PublicTolet",
 			"Moutain","River","Beach","BookStore","Library","TeaRoom","Pass","Cinema",
 			"Lake","Theatre","Forest","IceCream","Clinic","TouristArea","Mall","VehiclesRental",
+			"Shop","TravelCompany","Transport"
 //			"more","more","more","more","more","more","more","more",
 //			"more","more","more","more","more","more","more","more",
 	});
