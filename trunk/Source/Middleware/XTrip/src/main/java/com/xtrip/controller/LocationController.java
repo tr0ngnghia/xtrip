@@ -79,16 +79,18 @@ public class LocationController{
 	@RequestMapping("/getSlice")
 	public @ResponseBody
 	XResponse getSlice(@RequestParam(value = "index", defaultValue = "0") int index,
-					   @RequestParam(value = "count", defaultValue = "10") int count){
+					   @RequestParam(value = "count", defaultValue = "10") int count,
+					   @RequestParam(value = "type", required = false) Long type,
+					   @RequestParam(value = "postCode", required = false) String postCode){
 		try{
 			XResponse res = new XResponse();
 			
 			//limit number of item each request
 			if(count > 100){
 				count = 100;
-			}
+			}			
 			
-			List<ObjectId> ids = LocationModel.getInstance().getAllLocationIds();
+			List<ObjectId> ids = LocationModel.getInstance().getSliceLocationIds(type, postCode);
 			if(ids != null){
 				List<XLocation> xLocations = new ArrayList<XLocation>();
 				int fromIndex = index < 0 ? 0 : (index > ids.size() ? ids.size() : index);

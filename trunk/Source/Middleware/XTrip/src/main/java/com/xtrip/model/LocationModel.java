@@ -102,4 +102,22 @@ public class LocationModel extends BaseModel {
 		}
 		return res;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<ObjectId> getSliceLocationIds(Long type, String postCode) {
+		String query = "";
+		if(type != null){
+			query = query + "type: " + type + ",";
+		}
+		if(postCode != null && !postCode.isEmpty()){
+			query = query + "postCode: " + "\"" + postCode + "\"";
+		}
+		
+		List<ObjectId> res = new ArrayList<ObjectId>();
+		Iterable<Location> locations = (Iterable<Location>) findWithProjection("{"+query+"}", "{_id : 1}");
+		for (Location location : locations) {
+			res.add(location._id);
+		}
+		return res;
+	}
 }
