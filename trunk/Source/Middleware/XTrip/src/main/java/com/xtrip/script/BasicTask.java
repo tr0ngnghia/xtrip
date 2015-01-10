@@ -29,7 +29,8 @@ public abstract class BasicTask {
 		synchronized (JavaJongo.class) {
 			Properties conf = CommonCoreController.getConfiguration();
 			conf.setProperty(CommonConfigurationEntries.mongo_uri.getValue(),
-					"mongodb://admin:HTik0dL2@SG-xtrip-4111.servers.mongodirector.com:27017/admin");
+//					"mongodb://admin:HTik0dL2@SG-xtrip-4111.servers.mongodirector.com:27017/admin");
+					"mongodb://localhost:27017/xtrip");
 			conf.setProperty(
 					CommonConfigurationEntries.mongo_gridfs_enabled.getValue(),
 					"false");

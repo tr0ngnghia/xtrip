@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.bson.types.ObjectId;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -39,6 +40,7 @@ public class ScriptController {
 	XResponse importJson(@RequestParam(value = "apikey", required = false) String apikey){
 		try{			
 			XResponse res = new XResponse();
+			List<Boolean> result = new ArrayList();
 			
 			if(apikey == null || apikey.isEmpty()){
 				return CommonResponse.MISSING_APIKEY;
@@ -76,18 +78,36 @@ public class ScriptController {
 				if (data != null && !data.equals("")) {
 					JSONParser jsonParser = new JSONParser();
 					JSONObject jsonObject = (JSONObject) jsonParser.parse(data);
-					JSONArray jsonArray = (JSONArray) jsonObject.get("_locations");
-					Iterator<JSONObject> iterator = jsonArray.iterator();
-					while (iterator.hasNext()) {
-						JSONObject lobj = (JSONObject) iterator.next();
-
-						Location location = new Location();
-						location.setName(((String) lobj.get("Name")).trim());
-						location.setDescription(((String) lobj.get("Description")).trim());
-						location.setLongtitude((Double) lobj.get("Lng"));
-						location.setLatitude((Double) lobj.get("Lat"));
+					JSONArray jsonArray = (JSONArray) jsonObject.get("data");
+					for (Object obj : jsonArray) {
+						ObjectMapper mapper = new ObjectMapper();
+						XLocation xLocation = mapper.readValue(obj.toString(), XLocation.class);
 						
-						LocationModel.getInstance().set(location);
+						Location mLocation = new Location();
+						mLocation.setDateModified(System.currentTimeMillis());
+						mLocation.setName(xLocation.getName());
+						mLocation.setDescription(xLocation.getLongDesc());
+						mLocation.setShortDesc(xLocation.getShortDesc());
+						mLocation.setLatitude(xLocation.getLat());
+						mLocation.setLongtitude(xLocation.getLng());
+						mLocation.setImageUrls(xLocation.getGalary());
+						mLocation.setIsPublic(xLocation.getIsPublic());
+						mLocation.setIsShared(xLocation.getIsShared());
+						mLocation.setType(xLocation.getType());
+						mLocation.setAddress(xLocation.getAddress());
+						mLocation.setPhone(xLocation.getPhone());
+						mLocation.setFax(xLocation.getFax());
+						mLocation.setPostCode(xLocation.getPostCode());
+						mLocation.setEmail(xLocation.getEmail());
+						mLocation.setWebsite(xLocation.getWebsite());
+						mLocation.setPurchase(xLocation.getPurchase());
+						mLocation.setUtils(xLocation.getUtils());
+						mLocation.setCapacity(xLocation.getCapacity());
+						mLocation.setStar(xLocation.getStar());
+						mLocation.setRoom(xLocation.getRoom());
+						
+						boolean err = LocationModel.getInstance().set(mLocation);
+						result.add(err);
 					}
 				}
 			} catch (ParseException ex) {
@@ -95,13 +115,14 @@ public class ScriptController {
 				return CommonResponse.SERVER_ERROR;
 			}
 			
+			res.setData(result);
 			return res;
 		}catch(Exception ex){
 			return CommonResponse.SERVER_ERROR;
 		}
 	}
 	
-	@RequestMapping("/update")
+	@RequestMapping("/updateAll")
 	public @ResponseBody
 	XResponse update(@RequestParam(value = "apikey", required = false) String apikey){
 		try{			
@@ -125,6 +146,35 @@ public class ScriptController {
 						boolean err = LocationModel.getInstance().set(mLocation);
 						result.add(err);
 					}
+				}
+			}		
+			
+			res.setData(result);
+			return res;
+		}catch(Exception ex){
+			return CommonResponse.SERVER_ERROR;
+		}
+	}
+	
+	@RequestMapping("/deleteAll")
+	public @ResponseBody
+	XResponse deleteAll(@RequestParam(value = "apikey", required = false) String apikey){
+		try{			
+			XResponse res = new XResponse();
+			
+			if(apikey == null || apikey.isEmpty()){
+				return CommonResponse.MISSING_APIKEY;
+			}
+			
+			if(!apikey.equals("nghiapht")){
+				return CommonResponse.WRONG_APIKEY;
+			}
+			
+			List<ObjectId> ids = LocationModel.getInstance().getAllLocationIds();
+			List<Boolean> result = new ArrayList<Boolean>();
+			if(ids != null){				
+				for(ObjectId id : ids){
+//					LocationModel.getInstance().remove(id);					
 				}
 			}		
 			
