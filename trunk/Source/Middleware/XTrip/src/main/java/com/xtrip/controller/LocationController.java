@@ -48,13 +48,15 @@ public class LocationController{
 	
 	@RequestMapping("/getTotal")
 	public @ResponseBody
-	XResponse getTotal(){
+	XResponse getTotal(@RequestParam(value = "type", required = false) Long type,
+			   		  @RequestParam(value = "postCode", required = false) String postCode){
 		try{		
 			XResponse res = new XResponse();
-			int total = LocationModel.getInstance().getTotalNumberOfLocation();
+			long total = LocationModel.getInstance().getTotalNumberOfLocation(type, postCode);
 			res.setData(total);
 			return res;
 		}catch(Exception ex){
+			System.out.println(ex.getMessage());
 			return CommonResponse.SERVER_ERROR;
 		}
 	}	
