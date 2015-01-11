@@ -15,8 +15,12 @@
 	</h1>
 	</center>
 	
+	<br><br><b>Update 12.01.2015:</b>
+	<br>- update api get enum for postcode
+	
 	<br><br><b>Update 10.01.2015:</b>
 	<br>- getSlice: filter location by type and postCode
+	<br>- getTotal: filter location by type and postCode
 	
 	<br><br><b>Update 08.01.2015:</b>
 	<br>- Some API for enumaration

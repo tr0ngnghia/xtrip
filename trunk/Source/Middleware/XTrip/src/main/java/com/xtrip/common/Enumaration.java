@@ -10,7 +10,7 @@ public class Enumaration {
 			"Hotel","Resort","Motel","Restaurant","Cafe","FoodStall","Tower","Pagoda",
 			"Church","Park","ATM","Bank","Taxi","Committee","Souvenir","GasStation",
 			"Pharmacy","Island","Peninsula","Bar","Museum","Supermarket","Market","Harbor",
-			"TrainStation","CarStation","BusStation","Hospital","Karaoke","Massage","Spa","PublicTolet",
+			"TrainStation","CarStation","BusStation","Hospital","Karaoke","Massage","Spa","PublicToilet",
 			"Moutain","River","Beach","BookStore","Library","TeaRoom","Pass","Cinema",
 			"Lake","Theatre","Forest","IceCream","Clinic","TouristArea","Mall","VehiclesRental",
 			"Shop","TravelCompany","Transport"
