@@ -9,7 +9,7 @@ public class Enumaration {
 	public static List<String> LOCATION_TYPE = Arrays.asList(new String[]{
 			"Hotel","Resort","Motel","Restaurant","Cafe","FoodStall","Tower","Pagoda",
 			"Church","Park","ATM","Bank","Taxi","Committee","Souvenir","GasStation",
-			"GasStation","Island","Peninsula","Bar","Museum","Supermarket","Market","Harbor",
+			"Pharmacy","Island","Peninsula","Bar","Museum","Supermarket","Market","Harbor",
 			"TrainStation","CarStation","BusStation","Hospital","Karaoke","Massage","Spa","PublicTolet",
 			"Moutain","River","Beach","BookStore","Library","TeaRoom","Pass","Cinema",
 			"Lake","Theatre","Forest","IceCream","Clinic","TouristArea","Mall","VehiclesRental",
