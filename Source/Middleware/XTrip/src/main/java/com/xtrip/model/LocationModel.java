@@ -6,13 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.bson.types.ObjectId;
-import org.jongo.Aggregate;
 import org.jongo.MongoCollection;
-import org.jongo.ResultHandler;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mongodb.AggregationOutput;
-import com.mongodb.DBObject;
 import com.xtrip.model.bean.Location;
 
 /**
@@ -85,24 +81,27 @@ public class LocationModel extends BaseModel {
 
 	public Long getTotalNumberOfLocation(Long type, String postCode) {
 		String query = "";
-		if(type != null){
+		if (type != null) {
 			query = query + "type: " + type + ",";
 		}
-		if(postCode != null && !postCode.isEmpty()){
+		if (postCode != null && !postCode.isEmpty()) {
 			query = query + "postCode: " + "\"" + postCode + "\"";
 		}
-		return all().count("{"+query+"}");
-		// cai cho aggregate nay nghia them condition ko dc, long xem viet lai giup nghia nhe. 
-		//Trong tai lieu mongo noi la count bang aggregate se chinh xac hon la bang count thong thuong.
-//		return all().aggregate("[{ $match: {"+query+"}}, {$group : {_id : 0, count : {$sum : 1}}}]")
-//				.map(new ResultHandler<Integer>() {
-//
-//					@Override
-//					public Integer map(DBObject arg0) {
-//						System.out.println(arg0.toString());
-//						return (Integer) arg0.get("count");
-//					}
-//				}).get(0);
+		return all().count("{" + query + "}");
+		// cai cho aggregate nay nghia them condition ko dc, long xem viet lai
+		// giup nghia nhe.
+		// Trong tai lieu mongo noi la count bang aggregate se chinh xac hon la
+		// bang count thong thuong.
+		// return
+		// all().aggregate("[{ $match: {"+query+"}}, {$group : {_id : 0, count : {$sum : 1}}}]")
+		// .map(new ResultHandler<Integer>() {
+		//
+		// @Override
+		// public Integer map(DBObject arg0) {
+		// System.out.println(arg0.toString());
+		// return (Integer) arg0.get("count");
+		// }
+		// }).get(0);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -115,19 +114,20 @@ public class LocationModel extends BaseModel {
 		}
 		return res;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<ObjectId> getSliceLocationIds(Long type, String postCode) {
 		String query = "";
-		if(type != null){
+		if (type != null) {
 			query = query + "type: " + type + ",";
 		}
-		if(postCode != null && !postCode.isEmpty()){
+		if (postCode != null && !postCode.isEmpty()) {
 			query = query + "postCode: " + "\"" + postCode + "\"";
 		}
-		
+
 		List<ObjectId> res = new ArrayList<ObjectId>();
-		Iterable<Location> locations = (Iterable<Location>) findWithProjection("{"+query+"}", "{_id : 1}");
+		Iterable<Location> locations = (Iterable<Location>) findWithProjection(
+				"{" + query + "}", "{_id : 1}");
 		for (Location location : locations) {
 			res.add(location._id);
 		}

@@ -3,8 +3,6 @@ package com.xtrip.model.bean;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.xtrip.common.Common.LocationType;
-
 /**
  * @author longnh
  */
