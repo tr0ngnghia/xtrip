@@ -79,13 +79,16 @@ public class LocationModel extends BaseModel {
 		return res;
 	}
 
-	public Long getTotalNumberOfLocation(Long type, String postCode) {
+	public Long getTotalNumberOfLocation(Long type, String postCode, String name) {
 		String query = "";
 		if (type != null) {
 			query = query + "type: " + type + ",";
 		}
 		if (postCode != null && !postCode.isEmpty()) {
-			query = query + "postCode: " + "\"" + postCode + "\"";
+			query = query + "postCode: " + "\"" + postCode + "\"" + ",";;
+		}
+		if(name != null && !name.isEmpty()){
+			query = query + "name: " + "/" + name + "/";
 		}
 		return all().count("{" + query + "}");
 		// cai cho aggregate nay nghia them condition ko dc, long xem viet lai
@@ -116,18 +119,20 @@ public class LocationModel extends BaseModel {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<ObjectId> getSliceLocationIds(Long type, String postCode) {
+	public List<ObjectId> getSliceLocationIds(Long type, String postCode, String name) {
 		String query = "";
 		if (type != null) {
 			query = query + "type: " + type + ",";
 		}
-		if (postCode != null && !postCode.isEmpty()) {
-			query = query + "postCode: " + "\"" + postCode + "\"";
+		if (postCode != null && !postCode.isEmpty() && postCode.length() == 10) {
+			query = query + "postCode: " + "\"" + postCode + "\"" + ",";
+		}
+		if(name != null && !name.isEmpty()){
+			query = query + "name: " + "{$regex:/" + name + "/}";
 		}
 
 		List<ObjectId> res = new ArrayList<ObjectId>();
-		Iterable<Location> locations = (Iterable<Location>) findWithProjection(
-				"{" + query + "}", "{_id : 1}");
+		Iterable<Location> locations = (Iterable<Location>) findWithProjection("{" + query + "}", "{_id : 1}");
 		for (Location location : locations) {
 			res.add(location._id);
 		}

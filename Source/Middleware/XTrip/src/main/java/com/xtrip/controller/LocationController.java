@@ -49,10 +49,16 @@ public class LocationController{
 	@RequestMapping("/getTotal")
 	public @ResponseBody
 	XResponse getTotal(@RequestParam(value = "type", required = false) Long type,
-			   		  @RequestParam(value = "postCode", required = false) String postCode){
+			   		  @RequestParam(value = "postCode", required = false) String postCode,
+			   		  @RequestParam(value = "name", required = false) String name){
 		try{		
 			XResponse res = new XResponse();
-			long total = LocationModel.getInstance().getTotalNumberOfLocation(type, postCode);
+			//validate postcode
+			if(postCode != null && postCode.length() != 10){
+				return CommonResponse.INVALID_PARAM;
+			}
+			
+			long total = LocationModel.getInstance().getTotalNumberOfLocation(type, postCode, name);
 			res.setData(total);
 			return res;
 		}catch(Exception ex){
@@ -83,16 +89,21 @@ public class LocationController{
 	XResponse getSlice(@RequestParam(value = "index", defaultValue = "0") int index,
 					   @RequestParam(value = "count", defaultValue = "10") int count,
 					   @RequestParam(value = "type", required = false) Long type,
-					   @RequestParam(value = "postCode", required = false) String postCode){
+					   @RequestParam(value = "postCode", required = false) String postCode,
+					   @RequestParam(value = "name", required = false) String name){
 		try{
 			XResponse res = new XResponse();
 			
 			//limit number of item each request
 			if(count > 100){
 				count = 100;
-			}			
+			}	
+			//validate postcode
+			if(postCode != null && postCode.length() != 10){
+				return CommonResponse.INVALID_PARAM;
+			}
 			
-			List<ObjectId> ids = LocationModel.getInstance().getSliceLocationIds(type, postCode);
+			List<ObjectId> ids = LocationModel.getInstance().getSliceLocationIds(type, postCode, name);
 			if(ids != null){
 				List<XLocation> xLocations = new ArrayList<XLocation>();
 				int fromIndex = index < 0 ? 0 : (index > ids.size() ? ids.size() : index);

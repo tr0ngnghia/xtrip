@@ -1,7 +1,7 @@
 package com.xtrip.entity;
 
 public class XRegion {
-	private String postcode;
+	private String postCode;
 	private String name;
 	private String type;
 //	private byte level;
@@ -23,12 +23,12 @@ public class XRegion {
 		this.name = name;
 	}
 	
-	public String getPostcode() {
-		return this.postcode;
+	public String getPostCode() {
+		return this.postCode;
 	}
 
-	public void setPostcode(String postcode) {
-		this.postcode = postcode;
+	public void setPostCode(String postCode) {
+		this.postCode = postCode;
 	}
 	
 	public String getType() {
