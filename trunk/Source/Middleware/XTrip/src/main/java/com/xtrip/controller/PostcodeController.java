@@ -97,7 +97,7 @@ public class PostcodeController {
 //			ret.setLevel(mRegion.getLevel());
 			ret.setName(mRegion.getName());
 //			ret.setParent(mRegion.getParent());
-			ret.setPostcode(mRegion.getPostcode());
+			ret.setPostCode(mRegion.getPostcode());
 			ret.setType(mRegion.getType());
 		}		
 		return ret;
