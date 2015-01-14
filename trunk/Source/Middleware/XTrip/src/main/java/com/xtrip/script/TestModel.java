@@ -31,7 +31,7 @@ public class TestModel extends BasicTask {
 		}
 		
 		//----------------- Get Total Number Of Location method -----------------
-		System.out.println(LocationModel.getInstance().getTotalNumberOfLocation(null, null));
+		System.out.println(LocationModel.getInstance().getTotalNumberOfLocation(null, null, null));
 		
 		//----------------- Get method -----------------
 		Location res = LocationModel.getInstance().get(new ObjectId("549cc12ae160c2f93cb00170"));
