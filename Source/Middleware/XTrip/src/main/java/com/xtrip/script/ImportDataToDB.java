@@ -31,7 +31,9 @@ import org.slf4j.LoggerFactory;
 
 import com.xtrip.common.Common.LocationType;
 import com.xtrip.model.LocationModel;
+import com.xtrip.model.RegionModel;
 import com.xtrip.model.bean.Location;
+import com.xtrip.model.bean.Region;
 
 public class ImportDataToDB extends BasicTask {
 	private static final Logger logger = LoggerFactory
@@ -120,7 +122,82 @@ public class ImportDataToDB extends BasicTask {
 		}
 	}
 
-	private void importLocationDataFromExcel() {
+	private void importPostcodeFromExcel() {
+		try {
+			File inputWorkbook = new File("C:/data/excel/postcode.xls");
+			if(!inputWorkbook.isFile()){
+				return;
+			}		
+		    Workbook wb = Workbook.getWorkbook(inputWorkbook);
+			 
+			// import provice
+			Sheet sheet = wb.getSheet(0);
+			int count = 0;
+			for (int i = 1; i < sheet.getRows(); i++) {
+				Region region = new Region();
+				region.setLevel((byte)0);
+				region.setPostcode(sheet.getCell(0, i).getContents());
+				region.setName(sheet.getCell(1, i).getContents());
+				region.setType(sheet.getCell(2, i).getContents());
+				System.out.println(region.getName());
+				System.out.println(region.getParent());
+				System.out.println(region.getPostcode());
+				System.out.println(region.getType());
+				System.out.println(region.getLevel());
+				if (!region.getName().isEmpty()) {
+					boolean err = RegionModel.getInstance().set(region);
+					System.out.println("------------------------------------:"+ err + ++count);
+				}
+			}
+			
+			// import district
+			sheet = wb.getSheet(1);
+			for (int i = 1; i < sheet.getRows(); i++) {
+				Region region = new Region();
+				region.setLevel((byte)1);
+				region.setPostcode(sheet.getCell(0, i).getContents());
+				region.setName(sheet.getCell(1, i).getContents());
+				region.setType(sheet.getCell(2, i).getContents());
+				region.setParent(sheet.getCell(4, i).getContents());
+				System.out.println(region.getName());
+				System.out.println(region.getParent());
+				System.out.println(region.getPostcode());
+				System.out.println(region.getType());
+				System.out.println(region.getLevel());
+				System.out.println("------------------------------------:");
+				if (!region.getName().isEmpty()) {
+					boolean err = RegionModel.getInstance().set(region);
+					System.out.println("------------------------------------:"+ err + ++count);
+				}
+			}
+		    
+			// import ward
+			sheet = wb.getSheet(2);
+			for (int i = 1; i < sheet.getRows(); i++) {
+				Region region = new Region();
+				region.setLevel((byte)2);
+				region.setPostcode(sheet.getCell(0, i).getContents());
+				region.setName(sheet.getCell(1, i).getContents());
+				region.setType(sheet.getCell(2, i).getContents());
+				region.setParent(sheet.getCell(4, i).getContents());
+				System.out.println(region.getName());
+				System.out.println(region.getParent());
+				System.out.println(region.getPostcode());
+				System.out.println(region.getType());
+				System.out.println(region.getLevel());
+				System.out.println("------------------------------------:");
+				if (!region.getName().isEmpty()) {
+					boolean err = RegionModel.getInstance().set(region);
+					System.out.println("------------------------------------:"+ err + ++count);
+				}
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		System.out.println("done");
+	}
+	
+	private void  importLocationDataFromExcel() {
 		try {
 			for (String file : excelFiles) {
 				File inputWorkbook = new File(file);
@@ -266,7 +343,8 @@ public class ImportDataToDB extends BasicTask {
 	public void run() {
 		this.init();
 		// this.importLocationDataFromJSON();
-		this.importLocationDataFromExcel();
+//		this.importLocationDataFromExcel();
+		this.importPostcodeFromExcel();
 	}
 
 	public static void main(String[] args) {
