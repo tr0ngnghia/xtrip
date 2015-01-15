@@ -10,7 +10,7 @@ public class Common {
 	}
 
 	public enum GenderType {
-		MALE, FEMALE, LESBIAN, GAY, UNDEFINED
+		MALE, FEMALE, LESBIAN, GAY, UNDEFINED // vãi ==))
 	}
 
 	public enum RoleType {

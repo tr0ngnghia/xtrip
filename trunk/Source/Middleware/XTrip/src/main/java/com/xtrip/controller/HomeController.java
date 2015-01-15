@@ -29,11 +29,7 @@ public class HomeController extends BaseController {
 			HttpServletResponse resp) {
 		ModelAndView modelAndView = new ModelAndView("home");
 		try {
-//			String id = req.getParameter("id");
-			
-			
 
-			
 		} catch (Exception ex) {
 			logger.error("process", ex);
 		}
