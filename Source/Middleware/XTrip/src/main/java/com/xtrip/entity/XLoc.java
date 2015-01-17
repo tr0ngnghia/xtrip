@@ -7,6 +7,9 @@ public class XLoc {
 	private String vehicle;
 //	private String note;
 	
+	public XLoc(){		
+	}
+	
 	public XLoc(int order, String id){
 		this.order = order;
 		this.id = id;
