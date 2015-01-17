@@ -8,7 +8,6 @@ import java.util.Map;
 import com.xtrip.common.Common.VehicleType;
 import com.xtrip.model.bean.Budget;
 import com.xtrip.model.bean.Contact;
-import com.xtrip.model.bean.Day;
 import com.xtrip.model.bean.Schedule;
 
 public class XPlan {
@@ -27,7 +26,7 @@ public class XPlan {
 	private String province;
 	private String note;
 	private List<XLocation> locations;
-	private List<Day> schedules;
+	private List<XDay> schedules;
 	
 	public XPlan() {
 		id = "";
@@ -45,7 +44,7 @@ public class XPlan {
 		province = "";
 		note = "";
 		locations = new ArrayList<XLocation>();
-		schedules = new ArrayList<Day>();
+		schedules = new ArrayList<XDay>();
 	}
 
 	public String getId() {
@@ -106,11 +105,11 @@ public class XPlan {
 		}		
 	}
 
-	public List<Day> getSchedules() {
+	public List<XDay> getSchedules() {
 		return this.schedules;
 	}
 
-	public void setSchedules(List<Day> schedules) {
+	public void setSchedules(List<XDay> schedules) {
 		if(schedules != null){
 			this.schedules.addAll(schedules);
 		}		
