@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.xtrip.common.Common.VehicleType;
 
 /**
  * @author longnh
@@ -19,15 +18,15 @@ public class Plan extends BaseBean {
 	private String description;
 	private long start;
 	private long end;
-	private long totalBuget;
+	private Budget buget;
+	private int member;
 	private List<String> locationIds;
-	private Map<String, Schedule> scheduleOfLocation;
-	private Map<String, Integer> memberOfLocation;
-	private Map<String, VehicleType> vehicleOfLocations;
-	private Map<String, Budget> budgetOfLocations;
-	private Map<String, Contact> contactOfLocations;
+	private Map<String, Schedule> schedule;
 	private List<String> visitedLocationsIds;
 	private String ownerId;
+	private byte type;
+	private double distance;
+	private String province;
 	private Boolean isShared;
 	private Boolean isPublic;
 	private long dateCreated;
@@ -42,15 +41,15 @@ public class Plan extends BaseBean {
 		description = "";
 		start = System.currentTimeMillis();
 		end = System.currentTimeMillis();
-		totalBuget = 0;
+		buget = new Budget();
+		member = 0;
 		locationIds = new ArrayList<String>();
-		scheduleOfLocation = new HashMap<String, Schedule>();
-		memberOfLocation = new HashMap<String, Integer>();
-		vehicleOfLocations = new HashMap<String, VehicleType>();
-		budgetOfLocations = new HashMap<String, Budget>();
-		contactOfLocations = new HashMap<String, Contact>();
+		schedule = new HashMap<String, Schedule>();
 		visitedLocationsIds = new ArrayList<String>();
 		ownerId = "";
+		type = 0;
+		distance = 0.0;
+		province = "";
 		isShared = true;
 		isPublic = true;
 		dateCreated = System.currentTimeMillis();
@@ -97,12 +96,20 @@ public class Plan extends BaseBean {
 		this.end = end;
 	}
 
-	public long getTotalBuget() {
-		return this.totalBuget;
+	public Budget getBuget() {
+		return this.buget;
 	}
 
-	public void setTotalBuget(long totalBuget) {
-		this.totalBuget = totalBuget;
+	public void setBuget(Budget buget) {
+		this.buget = buget;
+	}
+
+	public int getMember() {
+		return this.member;
+	}
+
+	public void setMember(int member) {
+		this.member = member;
 	}
 
 	public List<String> getLocationIds() {
@@ -113,45 +120,12 @@ public class Plan extends BaseBean {
 		this.locationIds = locationIds;
 	}
 
-	public Map<String, Schedule> getScheduleOfLocation() {
-		return this.scheduleOfLocation;
+	public Map<String, Schedule> getSchedule() {
+		return this.schedule;
 	}
 
-	public void setScheduleOfLocation(Map<String, Schedule> scheduleOfLocation) {
-		this.scheduleOfLocation = scheduleOfLocation;
-	}
-
-	public Map<String, Integer> getMemberOfLocation() {
-		return this.memberOfLocation;
-	}
-
-	public void setMemberOfLocation(Map<String, Integer> memberOfLocation) {
-		this.memberOfLocation = memberOfLocation;
-	}
-
-	public Map<String, VehicleType> getVehicleOfLocations() {
-		return this.vehicleOfLocations;
-	}
-
-	public void setVehicleOfLocations(
-			Map<String, VehicleType> vehicleOfLocations) {
-		this.vehicleOfLocations = vehicleOfLocations;
-	}
-
-	public Map<String, Budget> getBudgetOfLocations() {
-		return this.budgetOfLocations;
-	}
-
-	public void setBudgetOfLocations(Map<String, Budget> budgetOfLocations) {
-		this.budgetOfLocations = budgetOfLocations;
-	}
-
-	public Map<String, Contact> getContactOfLocations() {
-		return this.contactOfLocations;
-	}
-
-	public void setContactOfLocations(Map<String, Contact> contactOfLocations) {
-		this.contactOfLocations = contactOfLocations;
+	public void setSchedule(Map<String, Schedule> schedule) {
+		this.schedule = schedule;
 	}
 
 	public List<String> getVisitedLocationsIds() {
@@ -168,6 +142,30 @@ public class Plan extends BaseBean {
 
 	public void setOwnerId(String ownerId) {
 		this.ownerId = ownerId;
+	}
+
+	public byte getType() {
+		return this.type;
+	}
+
+	public void setType(byte type) {
+		this.type = type;
+	}
+
+	public double getDistance() {
+		return this.distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+
+	public String getProvince() {
+		return this.province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
 	}
 
 	public Boolean getIsShared() {
