@@ -7,6 +7,9 @@ public class XDay {
 	private int index;
 	private List<XLoc> locations;
 	
+	public XDay(){		
+	}
+	
 	public XDay(int index){
 		this.index = index;
 		locations = new ArrayList<XLoc>();

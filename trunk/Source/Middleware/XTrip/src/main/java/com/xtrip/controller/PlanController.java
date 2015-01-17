@@ -166,13 +166,18 @@ public class PlanController {
 //				return CommonResponse.INVALID_PARAM;
 //			}
 			
-			Plan mPlan = PlanModel.getInstance().get(new ObjectId(id));		
-			if(mPlan == null){
+//			Plan mPlan = PlanModel.getInstance().get(new ObjectId(id));		
+//			if(mPlan == null){
+//				return CommonResponse.ITEM_NOTFOUND;
+//			}
+			
+			XPlan xPlan = DUMP_DATA.get(id);
+			if(xPlan == null){
 				return CommonResponse.ITEM_NOTFOUND;
 			}
 			
 			ObjectMapper mapper = new ObjectMapper();
-			XPlan xPlan = mapper.readValue(data, XPlan.class);
+			xPlan = mapper.readValue(data, XPlan.class);
 			
 //			mPlan.setDateModified(System.currentTimeMillis());
 //			mPlan.setName(xPlan.getName());
