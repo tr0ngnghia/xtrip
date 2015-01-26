@@ -1,14 +1,7 @@
 package com.xtrip.entity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import com.xtrip.common.Common.VehicleType;
-import com.xtrip.model.bean.Budget;
-import com.xtrip.model.bean.Contact;
-import com.xtrip.model.bean.Schedule;
 
 public class XPlan {
 	private String id;
@@ -22,11 +15,11 @@ public class XPlan {
 	private short member;
 	private String owner;
 	private byte type;
-	private short length;
+	private float distance;
 	private String province;
-	private String note;
-	private List<XLocation> locations;
-	private List<XDay> schedules;
+	private String note;	
+	private List<XDay> schedulers;
+	private List<XLocation> locs;
 	
 	public XPlan() {
 		id = "";
@@ -40,11 +33,11 @@ public class XPlan {
 		member = 0;
 		owner = "";
 		type = 0;
-		length = 0;
+		distance = 0;
 		province = "";
 		note = "";
-		locations = new ArrayList<XLocation>();
-		schedules = new ArrayList<XDay>();
+		schedulers = new ArrayList<XDay>();
+		locs = new ArrayList<XLocation>();
 	}
 
 	public String getId() {
@@ -95,23 +88,13 @@ public class XPlan {
 		this.budget = budget;
 	}
 
-	public List<XLocation> getLocations() {
-		return this.locations;
+	public List<XDay> getSchedulers() {
+		return this.schedulers;
 	}
 
-	public void setLocations(List<XLocation> locations) {
-		if(locations != null){
-			this.locations.addAll(locations);
-		}		
-	}
-
-	public List<XDay> getSchedules() {
-		return this.schedules;
-	}
-
-	public void setSchedules(List<XDay> schedules) {
-		if(schedules != null){
-			this.schedules.addAll(schedules);
+	public void setSchedulers(List<XDay> scheduler) {
+		if(scheduler != null){
+			this.schedulers.addAll(scheduler);
 		}		
 	}
 
@@ -163,12 +146,12 @@ public class XPlan {
 		this.note = note;
 	}
 	
-	public short getLength() {
-		return this.length;
+	public float getDistance() {
+		return this.distance;
 	}
 
-	public void setLength(short length) {
-		this.length = length;
+	public void setDistance(float distance) {
+		this.distance = distance;
 	}
 	
 	public String getProvince() {
@@ -177,5 +160,15 @@ public class XPlan {
 
 	public void setProvince(String province) {
 		this.province = province;
+	}
+	
+	public List<XLocation> getLocs() {
+		return this.locs;
+	}
+
+	public void setLocs(List<XLocation> locs) {
+		if(locs != null){
+			this.locs.addAll(locs);
+		}		
 	}
 }

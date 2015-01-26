@@ -1,6 +1,7 @@
 package com.xtrip.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,16 +16,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.xtrip.common.CommonResponse;
 import com.xtrip.common.XResponse;
 import com.xtrip.entity.XDay;
+import com.xtrip.entity.XLoc;
+import com.xtrip.entity.XLocation;
 import com.xtrip.entity.XPlan;
 import com.xtrip.model.LocationModel;
 import com.xtrip.model.PlanModel;
+import com.xtrip.model.bean.Location;
+import com.xtrip.model.bean.PLocation;
 import com.xtrip.model.bean.Plan;
 
 @Controller
 @RequestMapping("/plan")
 public class PlanController {
-	
-	public static Map<String, XPlan> DUMP_DATA = new HashMap<String, XPlan>();
 	
 	@RequestMapping("/get")
 	public @ResponseBody
@@ -40,17 +43,12 @@ public class PlanController {
 //				return CommonResponse.INVALID_PARAM;
 //			}
 			
-//			Plan plan = PlanModel.getInstance().get(new ObjectId(id));			
-//			if(plan == null){
-//				return CommonResponse.ITEM_NOTFOUND;
-//			}					
-//			res.setData(toXPlan(plan));
-			
-			XPlan xPlan = DUMP_DATA.get(id);
-			if(xPlan == null){
+			Plan plan = PlanModel.getInstance().get(id);			
+			if(plan == null){
 				return CommonResponse.ITEM_NOTFOUND;
 			}					
-			res.setData(xPlan);
+			res.setData(toXPlan(plan));
+								
 			return res;
 		}catch(Exception ex){
 			return CommonResponse.SERVER_ERROR;			
@@ -63,8 +61,7 @@ public class PlanController {
 		try{		
 			XResponse res = new XResponse();
 						
-//			long total = PlanModel.getInstance().getTotalNumberOfPlan();
-			long total = DUMP_DATA.size();
+			long total = PlanModel.getInstance().getTotalNumberOfPlan();
 			res.setData(total);
 			return res;
 		}catch(Exception ex){
@@ -85,25 +82,19 @@ public class PlanController {
 				count = 100;
 			}	
 	
-//			List<ObjectId> ids = PlanModel.getInstance().getAllPlanIds();
-//			if(ids != null){
-//				List<XPlan> xPlans = new ArrayList<XPlan>();
-//				int fromIndex = index < 0 ? 0 : (index > ids.size() ? ids.size() : index);
-//				int toIndex = fromIndex + count > ids.size() ? ids.size() : fromIndex + count;						
-//				List<Plan> mPlans = PlanModel.getInstance().multiGet(ids.subList(fromIndex, toIndex));
-//				if(mPlans != null){
-//					for(Plan mPlan : mPlans){
-//						xPlans.add(toXPlan(mPlan));
-//					}
-//				}
-//				res.setData(xPlans);
-//			}
-			
-			List<XPlan> xPlans = new ArrayList<XPlan>();
-			int fromIndex = index < 0 ? 0 : (index > DUMP_DATA.size() ? DUMP_DATA.size() : index);
-			int toIndex = fromIndex + count > DUMP_DATA.size() ? DUMP_DATA.size() : fromIndex + count;
-			xPlans.addAll(DUMP_DATA.values());		
-			res.setData(xPlans);
+			List<ObjectId> ids = PlanModel.getInstance().getAllPlanIds();
+			if(ids != null){
+				List<XPlan> xPlans = new ArrayList<XPlan>();
+				int fromIndex = index < 0 ? 0 : (index > ids.size() ? ids.size() : index);
+				int toIndex = fromIndex + count > ids.size() ? ids.size() : fromIndex + count;						
+				List<Plan> mPlans = PlanModel.getInstance().multiGet(ids.subList(fromIndex, toIndex));
+				if(mPlans != null){
+					for(Plan mPlan : mPlans){
+						xPlans.add(toXPlan(mPlan));
+					}
+				}
+				res.setData(xPlans);
+			}
 			
 			return res;
 		}catch(Exception ex){
@@ -124,27 +115,46 @@ public class PlanController {
 			ObjectMapper mapper = new ObjectMapper();
 			XPlan xPlan = mapper.readValue(data, XPlan.class);
 			
-//			Plan mPlan = new Plan();			
-//			mPlan.setName(xPlan.getName());
-//			mPlan.setDescription(xPlan.getDesc());
-//			mPlan.setStart(xPlan.getStart());
-//		    mPlan.setEnd(xPlan.getEnd());
-//		    mPlan.setNote(xPlan.getNote());
-//		    mPlan.setOwnerId(xPlan.getOwner());
-//			
-//			PlanModel.getInstance().set(mPlan);
+			if(xPlan == null || xPlan.getId() == null || xPlan.getId().isEmpty()){
+				return CommonResponse.INVALID_PARAM;	
+			}
 			
-			String id = DUMP_DATA.size() + "";
-			xPlan.setId(id);
-			List<XDay> schedules = new ArrayList<XDay>();
-			schedules.add(new XDay(1));
-			schedules.add(new XDay(2));
-			schedules.add(new XDay(3));
+			Plan mPlan = PlanModel.getInstance().get(xPlan.getId());		
+			if(mPlan != null){
+				return CommonResponse.DUPLICATE_KEY;
+			}
+				 
+			mPlan = new Plan();			
+			mPlan.setId(xPlan.getId());
+			mPlan.setDateCreated(System.currentTimeMillis());
+			mPlan.setDateModified(System.currentTimeMillis());
+			mPlan.setName(xPlan.getName());
+			mPlan.setDescription(xPlan.getDesc());		
+		    mPlan.setStart(xPlan.getStart());
+		    mPlan.setEnd(xPlan.getEnd());
+		    mPlan.setNote(xPlan.getNote());
+		    mPlan.setOwnerId(xPlan.getOwner());
+		    mPlan.getBuget().setMoney(xPlan.getBudget());
+		    mPlan.setDistance(xPlan.getDistance());
+		    mPlan.setMember(xPlan.getMember());
+		    mPlan.setProvince(xPlan.getProvince());
+		    mPlan.setType(xPlan.getType());
+		    
+		    if(xPlan.getSchedulers() == null || xPlan.getSchedulers().isEmpty()){
+		    	List<PLocation> schedules = new ArrayList<PLocation>();
+		    	PLocation pLoc1 =  new PLocation((byte)1, "549e95f8e4b03d6c04def7e3");
+		    	PLocation pLoc2 =  new PLocation((byte)1, "549e95f8e4b03d6c04def7e2");
+		    	PLocation pLoc3 =  new PLocation((byte)2, "549e95f8e4b03d6c04def7df");
+		    	PLocation pLoc4 =  new PLocation((byte)2, "549e95f8e4b03d6c04def7dc");
+		    	schedules.add(pLoc1);
+		    	schedules.add(pLoc2);
+		    	schedules.add(pLoc3);
+		    	schedules.add(pLoc4);
+		    	mPlan.setSchedule(schedules);
+		    }			
+			PlanModel.getInstance().set(mPlan);
 			
-			xPlan.setSchedules(schedules);
-			DUMP_DATA.put(id, xPlan);
-			
-			res.setData(xPlan);
+			res.setData(toXPlan(mPlan));
 			return res;
 		}catch(Exception ex){
 			return CommonResponse.SERVER_ERROR;
@@ -166,32 +176,32 @@ public class PlanController {
 //				return CommonResponse.INVALID_PARAM;
 //			}
 			
-//			Plan mPlan = PlanModel.getInstance().get(new ObjectId(id));		
-//			if(mPlan == null){
-//				return CommonResponse.ITEM_NOTFOUND;
-//			}
-			
-			XPlan xPlan = DUMP_DATA.get(id);
-			if(xPlan == null){
+			Plan mPlan = PlanModel.getInstance().get(id);		
+			if(mPlan == null){
 				return CommonResponse.ITEM_NOTFOUND;
 			}
 			
+			XPlan xPlan = new XPlan();
 			ObjectMapper mapper = new ObjectMapper();
 			xPlan = mapper.readValue(data, XPlan.class);
 			
-//			mPlan.setDateModified(System.currentTimeMillis());
-//			mPlan.setName(xPlan.getName());
-//			mPlan.setDescription(xPlan.getDesc());		
-//		    mPlan.setStart(xPlan.getStart());
-//		    mPlan.setEnd(xPlan.getEnd());
-//		    mPlan.setNote(xPlan.getNote());
-//		    mPlan.setOwnerId(xPlan.getOwner());
-//		   		    
-//			PlanModel.getInstance().set(mPlan);
-			
-			DUMP_DATA.put(DUMP_DATA.size()+"", xPlan);
-			
-			res.setData(xPlan);
+			mPlan.setDateModified(System.currentTimeMillis());
+			mPlan.setName(xPlan.getName());
+			mPlan.setDescription(xPlan.getDesc());		
+		    mPlan.setStart(xPlan.getStart());
+		    mPlan.setEnd(xPlan.getEnd());
+		    mPlan.setNote(xPlan.getNote());
+		    mPlan.setOwnerId(xPlan.getOwner());
+		    mPlan.getBuget().setMoney(xPlan.getBudget());
+		    mPlan.setDistance(xPlan.getDistance());
+		    mPlan.setMember(xPlan.getMember());
+		    mPlan.setProvince(xPlan.getProvince());
+		    mPlan.setType(xPlan.getType());
+		    
+		   		    
+			PlanModel.getInstance().set(mPlan);			
+	
+			res.setData(toXPlan(mPlan));
 			return res;
 		}catch(Exception ex){
 			return CommonResponse.SERVER_ERROR;
@@ -210,47 +220,14 @@ public class PlanController {
 //			if(!ObjectId.isValid(id)){
 //				return CommonResponse.INVALID_PARAM;
 //			}
-//			PlanModel.getInstance().remove(new ObjectId(id));	
-			
-			DUMP_DATA.remove(id+"");
-			
+			PlanModel.getInstance().remove(id);
+				
 			return res;
 		}catch(Exception ex){
 			return CommonResponse.SERVER_ERROR;
 		}
 	}
-	
-	@RequestMapping("/getSlicePublic")
-	public @ResponseBody
-	XResponse getSlicePublic(@RequestParam(value = "index", defaultValue = "0") int index,
-					   @RequestParam(value = "count", defaultValue = "10") int count){
-		try{
-			XResponse res = new XResponse();
-			
-			//limit number of item each request
-			if(count > 100){
-				count = 100;
-			}	
-	
-//			List<ObjectId> ids = PlanModel.getInstance().getAllPlanIds();
-//			if(ids != null){
-//				List<XPlan> xPlans = new ArrayList<XPlan>();
-//				int fromIndex = index < 0 ? 0 : (index > ids.size() ? ids.size() : index);
-//				int toIndex = fromIndex + count > ids.size() ? ids.size() : fromIndex + count;						
-//				List<Plan> mPlans = PlanModel.getInstance().multiGet(ids.subList(fromIndex, toIndex));
-//				if(mPlans != null){
-//					for(Plan mPlan : mPlans){
-//						xPlans.add(toXPlan(mPlan));
-//					}
-//				}
-//				res.setData(xPlans);
-//			}		
-			return res;
-		}catch(Exception ex){
-			return CommonResponse.SERVER_ERROR;
-		}
-	}
-	
+		
 	private XPlan toXPlan(Plan mPlan){
 		XPlan ret = new XPlan();
 		
@@ -260,24 +237,91 @@ public class PlanController {
 			ret.setDesc(mPlan.getDescription());
 			ret.setStart(mPlan.getStart());
 			ret.setEnd(mPlan.getEnd());
+			ret.setDateCreated(mPlan.getDateCreated());
+			ret.setDateModified(mPlan.getDateModified());
+			ret.setDistance((float)mPlan.getDistance());
+			ret.setMembers(mPlan.getMember());
+			ret.setProvince(mPlan.getProvince());
+			ret.setType(mPlan.getType());
 			ret.setNote(mPlan.getNote());
 			ret.setOwner(mPlan.getOwnerId());
-			ret.setBudget(mPlan.getTotalBuget());
+			ret.setBudget((float)mPlan.getBuget().getMoney());
 			
-			try{
-			 String dayObj = "{      \"index\": 1,      \"locations\": [        {          \"order\": 0,          \"id\": \"549e95f8e4b03d6c04def7da\",          \"visited\": true,          \"vehicle\": \"CAR\"        },        {          \"order\": 2,          \"id\": \"549e95f8e4b03d6c04def7da\",          \"visited\": false,          \"vehicle\": \"FOOT\"        },        {          \"order\": 1,          \"id\": \"549e95f8e4b03d6c04def7da\",          \"visited\": false,          \"vehicle\": \"MOTOBIKE\"        }      ]    }";
-			    ObjectMapper mapper2 = new ObjectMapper();
-				XDay xXDay = mapper2.readValue(dayObj, XDay.class);
-				List<XDay> schedules = new ArrayList<XDay>();
-				schedules.add(xXDay);
-				ret.setSchedules(schedules);
-			}
-			catch(Exception ex){
-				System.out.println(ex.getMessage());
+			// convert list schedulers
+			List<XDay> xScheduler = new ArrayList<XDay>();
+			List<XLocation> xLocations = new ArrayList<XLocation>();
+			if(mPlan.getSchedule() != null){
+				//init data for each day
+				Map<Byte, List<XLoc>> xMap =  new HashMap<Byte, List<XLoc>>();
+				List<ObjectId> locationIds = new ArrayList<ObjectId>();
+				for(PLocation pLoc : mPlan.getSchedule()){
+					if(xMap.containsKey(pLoc.getDay())){
+						List<XLoc> tmpList = new ArrayList<XLoc>(); 
+						tmpList.addAll(xMap.get(pLoc.getDay()));
+						tmpList.add(toXLoc(pLoc));
+						xMap.put(pLoc.getDay(), tmpList);
+					}
+					else{
+						xMap.put(pLoc.getDay(), Arrays.asList(new XLoc[]{toXLoc(pLoc)}));
+					}
+					locationIds.add(new ObjectId(pLoc.getLocationId()));
+				}
+				// put data to each day
+				for(byte day : xMap.keySet()){
+					XDay xDay = new XDay(day);				
+					xDay.setPLocs(xMap.get(day));
+					xScheduler.add(xDay);
+				}
+				//generate data for locations				
+				List<Location> mLocations = LocationModel.getInstance().multiGet(locationIds);
+				if(mLocations != null){
+					for(Location mLocation : mLocations){
+						xLocations.add(toXLocation(mLocation));
+					}
+				}
 			}
 			
+			ret.setLocs(xLocations);
+			ret.setSchedulers(xScheduler);
 		}
 		
 		return ret;
+	}
+		
+	private XLocation toXLocation(Location mLocation){
+		XLocation ret = new XLocation();
+		
+		if(mLocation != null){
+			ret.setId(mLocation.getId());
+			ret.setName(mLocation.getName());
+			ret.setLongDesc(mLocation.getDescription());
+			ret.setShortDesc(mLocation.getShortDesc());
+			ret.setLat(mLocation.getLatitude());
+			ret.setLng(mLocation.getLongtitude());
+			ret.setType(mLocation.getType());
+			ret.setDateCreated(mLocation.getDateCreated());
+			ret.setDateModified(mLocation.getDateModified());
+			ret.setIsPublic(mLocation.getIsPublic());
+			ret.setIsShared(mLocation.getIsShared());
+			ret.setGalary(mLocation.getImageUrls());
+			ret.setAddress(mLocation.getAddress());
+			ret.setPhone(mLocation.getPhone());
+			ret.setFax(mLocation.getFax());
+			ret.setPostCode(mLocation.getPostCode());
+			ret.setEmail(mLocation.getEmail());
+			ret.setWebsite(mLocation.getWebsite());
+			ret.setPurchase(mLocation.getPurchase());
+			ret.setUtils(mLocation.getUtils());
+			ret.setCapacity(mLocation.getCapacity());
+			ret.setStar(mLocation.getStar());
+			ret.setRoom(mLocation.getRoom());
+		}
+		
+		return ret;
+	}
+	
+	private XLoc toXLoc(PLocation pLoc){		
+		XLoc ret =  new XLoc(pLoc.getOrder(), pLoc.getLocationId());		
+		return ret;						
 	}
 }

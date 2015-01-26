@@ -14,21 +14,19 @@ public class Plan extends BaseBean {
 	@JsonIgnore
 	public static String COLLECTION_NAME = "plans";
 
+	private String id;
 	private String name;
 	private String description;
 	private long start;
 	private long end;
 	private Budget buget;
-	private int member;
+	private short member;
 	private List<String> locationIds;
-	private Map<String, Schedule> schedule;
-	private List<String> visitedLocationsIds;
+	private List<PLocation> schedulers;
 	private String ownerId;
 	private byte type;
-	private double distance;
+	private float distance;
 	private String province;
-	private Boolean isShared;
-	private Boolean isPublic;
 	private long dateCreated;
 	private long dateModified;
 	private List<String> likeIds;
@@ -37,6 +35,7 @@ public class Plan extends BaseBean {
 	private String note;
 
 	public Plan() {
+		id = "";
 		name = "";
 		description = "";
 		start = System.currentTimeMillis();
@@ -44,14 +43,11 @@ public class Plan extends BaseBean {
 		buget = new Budget();
 		member = 0;
 		locationIds = new ArrayList<String>();
-		schedule = new HashMap<String, Schedule>();
-		visitedLocationsIds = new ArrayList<String>();
+		schedulers = new ArrayList<PLocation>();
 		ownerId = "";
 		type = 0;
-		distance = 0.0;
+		distance = 0;
 		province = "";
-		isShared = true;
-		isPublic = true;
 		dateCreated = System.currentTimeMillis();
 		dateModified = System.currentTimeMillis();
 		likeIds = new ArrayList<String>();
@@ -60,8 +56,16 @@ public class Plan extends BaseBean {
 		note = "";
 	}
 
-	public String getId() {
+	public String getMId() {
 		return _id.toString();
+	}
+	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -104,11 +108,11 @@ public class Plan extends BaseBean {
 		this.buget = buget;
 	}
 
-	public int getMember() {
+	public short getMember() {
 		return this.member;
 	}
 
-	public void setMember(int member) {
+	public void setMember(short member) {
 		this.member = member;
 	}
 
@@ -120,20 +124,14 @@ public class Plan extends BaseBean {
 		this.locationIds = locationIds;
 	}
 
-	public Map<String, Schedule> getSchedule() {
-		return this.schedule;
+	public List<PLocation> getSchedule() {
+		return this.schedulers;
 	}
 
-	public void setSchedule(Map<String, Schedule> schedule) {
-		this.schedule = schedule;
-	}
-
-	public List<String> getVisitedLocationsIds() {
-		return this.visitedLocationsIds;
-	}
-
-	public void setVisitedLocationsIds(List<String> visitedLocationsIds) {
-		this.visitedLocationsIds = visitedLocationsIds;
+	public void setSchedule(List<PLocation> schedule) {
+		if(schedule != null){
+			this.schedulers.addAll(schedule);
+		}		
 	}
 
 	public String getOwnerId() {
@@ -152,11 +150,11 @@ public class Plan extends BaseBean {
 		this.type = type;
 	}
 
-	public double getDistance() {
+	public float getDistance() {
 		return this.distance;
 	}
 
-	public void setDistance(double distance) {
+	public void setDistance(float distance) {
 		this.distance = distance;
 	}
 
@@ -166,22 +164,6 @@ public class Plan extends BaseBean {
 
 	public void setProvince(String province) {
 		this.province = province;
-	}
-
-	public Boolean getIsShared() {
-		return this.isShared;
-	}
-
-	public void setIsShared(Boolean isShared) {
-		this.isShared = isShared;
-	}
-
-	public Boolean getIsPublic() {
-		return this.isPublic;
-	}
-
-	public void setIsPublic(Boolean isPublic) {
-		this.isPublic = isPublic;
 	}
 
 	public long getDateCreated() {

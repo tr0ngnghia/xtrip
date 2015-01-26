@@ -67,8 +67,9 @@ public class PlanModel extends BaseModel {
 		return error == null || "".equals(error);
 	}
 
-	public Plan get(ObjectId _id) {
-		return (Plan) all().findOne(_id).as(getClassInfo());
+	public Plan get(String id) {
+		String query = "{id: " + "\"" + (id != null ? id : "") + "\"" + "}";
+		return (Plan) all().findOne(query).as(getClassInfo());
 	}
 
 	public List<Plan> multiGet(List<ObjectId> _ids) {
@@ -101,5 +102,10 @@ public class PlanModel extends BaseModel {
 			res.add(plan._id);
 		}
 		return res;
+	}
+	
+	public void remove(String id){
+		String query = "{id: " + "\"" + (id != null ? id : "") + "\"" + "}";
+		all().remove(query);
 	}
 }
