@@ -4,38 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XDay {
-	private int index;
-	private List<XLoc> locations;
+	private int order;
+	private List<XLoc> pLocs;
 	
 	public XDay(){		
 	}
 	
 	public XDay(int index){
-		this.index = index;
-		locations = new ArrayList<XLoc>();
-		XLoc loc1 = new XLoc(1, "54b2b8f60fa18d106e0398ce");
-		XLoc loc2 = new XLoc(2, "54b2b8f60fa18d106e0398d6");
-		locations.add(loc1);
-		locations.add(loc2);
+		this.order = index;
+		pLocs = new ArrayList<XLoc>();
 	}
 	
-	public int getIndex(){
-		return index;
+	public int getOrder(){
+		return order;
 	}
 	
-	public void setIndex(int index){
-		this.index = index;
+	public void setOrder(int order){
+		this.order = order;
 	}
 	
-	public List<XLoc> getLocations(){
+	public List<XLoc> getPLocs(){
 		List<XLoc> temp = new ArrayList<XLoc>();
-		temp.addAll(this.locations);
+		temp.addAll(this.pLocs);
 		return temp;
 	}
 	
-	public void setLocations(List<XLoc> locations){
+	public void setPLocs(List<XLoc> locations){
 		if(locations != null){
-			this.locations.addAll(locations);	
+			this.pLocs.addAll(locations);	
 		}		
 	}
 }

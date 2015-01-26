@@ -7,7 +7,6 @@ import org.bson.types.ObjectId;
 
 import com.xtrip.model.PlanModel;
 import com.xtrip.model.bean.Plan;
-import com.xtrip.model.bean.Schedule;
 import com.xtrip.script.BasicTask;
 
 public class TestModel extends BasicTask {
@@ -61,7 +60,7 @@ public class TestModel extends BasicTask {
 		// plan.setSchedule(map);
 		// PlanModel.getInstance().set(plan);
 		
-		Plan newPlan = PlanModel.getInstance().get(new ObjectId("54ba5debe16086ebc50275dd"));
-		System.out.println(newPlan.getSchedule().get("54a4fb50e160e7d6cdc392e0").getVehicle());
+		Plan newPlan = PlanModel.getInstance().get("54ba5debe16086ebc50275dd");
+//		System.out.println(newPlan.getSchedule().get("54a4fb50e160e7d6cdc392e0").getVehicle());
 	}
 }

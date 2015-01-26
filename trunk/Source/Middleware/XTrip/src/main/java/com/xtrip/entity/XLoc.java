@@ -1,7 +1,7 @@
 package com.xtrip.entity;
 
 public class XLoc {
-	private int order;
+	private short order;
 	private String id;
 	private boolean visited;
 	private String vehicle;
@@ -10,7 +10,7 @@ public class XLoc {
 	public XLoc(){		
 	}
 	
-	public XLoc(int order, String id){
+	public XLoc(short order, String id){
 		this.order = order;
 		this.id = id;
 		this.visited = false;
@@ -18,11 +18,11 @@ public class XLoc {
 //		this.note = "";
 	}		
 	
-	public int getOrder(){
+	public short getOrder(){
 		return order;	
 	}
 	
-	public void setOrder(int order){
+	public void setOrder(short order){
 		this.order = order;	
 	}
 	
