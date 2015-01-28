@@ -15,6 +15,9 @@
 	</h1>
 	</center>
 	
+	<br><br><b>Update 28.01.2015:</b>
+	<br>- update api for CRUD plan
+	
 	<br><br><b>Update 12.01.2015:</b>
 	<br>- update api get enum for postcode
 	

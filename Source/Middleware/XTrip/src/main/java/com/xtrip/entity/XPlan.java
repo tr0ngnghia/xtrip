@@ -94,6 +94,7 @@ public class XPlan {
 
 	public void setSchedulers(List<XDay> scheduler) {
 		if(scheduler != null){
+			this.schedulers.clear();
 			this.schedulers.addAll(scheduler);
 		}		
 	}
@@ -168,6 +169,7 @@ public class XPlan {
 
 	public void setLocs(List<XLocation> locs) {
 		if(locs != null){
+			this.locs.clear();
 			this.locs.addAll(locs);
 		}		
 	}
