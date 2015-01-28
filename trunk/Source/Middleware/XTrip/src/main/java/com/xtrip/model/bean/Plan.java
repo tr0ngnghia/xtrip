@@ -124,12 +124,13 @@ public class Plan extends BaseBean {
 		this.locationIds = locationIds;
 	}
 
-	public List<PLocation> getSchedule() {
+	public List<PLocation> getSchedulers() {
 		return this.schedulers;
 	}
 
 	public void setSchedule(List<PLocation> schedule) {
 		if(schedule != null){
+			this.schedulers.clear();
 			this.schedulers.addAll(schedule);
 		}		
 	}

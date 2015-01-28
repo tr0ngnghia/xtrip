@@ -8,6 +8,9 @@ import java.util.Map;
 
 import org.bson.types.ObjectId;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -227,6 +230,71 @@ public class PlanController {
 			return CommonResponse.SERVER_ERROR;
 		}
 	}
+	
+	@RequestMapping("/schedule/update")
+	public @ResponseBody
+	XResponse updateSchedule(@RequestParam(value = "data", required = false) String data,	 		
+	 		 @RequestParam(value = "id", required = false) String id){
+		try{
+			XResponse res = new XResponse();
+			
+			if(id == null || id.isEmpty() || data == null || data.isEmpty()){
+				return CommonResponse.MISSING_PARAM;
+			}			
+			
+//			if(!ObjectId.isValid(id)){
+//				return CommonResponse.INVALID_PARAM;
+//			}
+			
+			// check if plan is exist
+			Plan mPlan = PlanModel.getInstance().get(id);		
+			if(mPlan == null){
+				return CommonResponse.ITEM_NOTFOUND;
+			}
+			
+			// parse json data
+			JSONParser jsonParser = new JSONParser();
+			JSONObject xDay = (JSONObject) jsonParser.parse(data);
+			
+			if(xDay == null || !xDay.containsKey("order") || !xDay.containsKey("plocs")){
+				return CommonResponse.INVALID_PARAM;
+			}
+			
+			byte day = Byte.parseByte(xDay.get("order").toString());
+			JSONArray pLocs = (JSONArray)xDay.get("plocs");
+
+			//remove old data
+			List<PLocation> newSchedulers = new ArrayList<PLocation>();			
+			if(mPlan.getSchedulers() != null){
+				for(PLocation pLoc : mPlan.getSchedulers()){
+					if(pLoc.getDay() != day){
+						newSchedulers.add(pLoc);
+					}
+				}
+			}
+			//add new data
+			if (pLocs != null) {
+				for (int i = 0; i < pLocs.size(); i++) {
+					ObjectMapper mapper = new ObjectMapper();
+					XLoc xLoc = mapper.readValue(pLocs.get(i).toString(), XLoc.class);
+					if (xLoc != null) {
+						PLocation pLoc = new PLocation(day, xLoc.getId());
+						pLoc.setOrder(xLoc.getOrder());
+						newSchedulers.add(pLoc);
+					}
+				}
+			}
+			
+			//put new schedule
+		    mPlan.setSchedule(newSchedulers);
+			PlanModel.getInstance().set(mPlan);			
+	
+			res.setData(toXPlan(mPlan));
+			return res;
+		}catch(Exception ex){
+			return CommonResponse.SERVER_ERROR;
+		}
+	}
 		
 	private XPlan toXPlan(Plan mPlan){
 		XPlan ret = new XPlan();
@@ -250,11 +318,11 @@ public class PlanController {
 			// convert list schedulers
 			List<XDay> xScheduler = new ArrayList<XDay>();
 			List<XLocation> xLocations = new ArrayList<XLocation>();
-			if(mPlan.getSchedule() != null){
+			if(mPlan.getSchedulers() != null){
 				//init data for each day
 				Map<Byte, List<XLoc>> xMap =  new HashMap<Byte, List<XLoc>>();
 				List<ObjectId> locationIds = new ArrayList<ObjectId>();
-				for(PLocation pLoc : mPlan.getSchedule()){
+				for(PLocation pLoc : mPlan.getSchedulers()){
 					if(xMap.containsKey(pLoc.getDay())){
 						List<XLoc> tmpList = new ArrayList<XLoc>(); 
 						tmpList.addAll(xMap.get(pLoc.getDay()));
