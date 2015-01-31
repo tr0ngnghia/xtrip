@@ -18,6 +18,9 @@ public class Enumaration {
 //			"more","more","more","more","more","more","more","more",
 	});
 	
+	public static List<Long> LIVE_LOCATION = Arrays.asList(new Long[]{1l,2l,4l});
+	public static List<Long> EAT_LOCATION = Arrays.asList(new Long[]{8l,16l,32l});
+	
 	// enum for purchase type
 	public static List<String> PURCHASE_TYPE = Arrays.asList(new String[]{
 			"ATM","VISA","CASH","MASTERCARD"

@@ -157,6 +157,7 @@ public class LocationController{
 			mLocation.setCapacity(xLocation.getCapacity());
 			mLocation.setStar(xLocation.getStar());
 			mLocation.setRoom(xLocation.getRoom());
+			mLocation.setPrice(xLocation.getPrice());
 			
 			LocationModel.getInstance().set(mLocation);
 			
@@ -213,6 +214,7 @@ public class LocationController{
 			mLocation.setCapacity(xLocation.getCapacity());
 			mLocation.setStar(xLocation.getStar());
 			mLocation.setRoom(xLocation.getRoom());
+			mLocation.setPrice(xLocation.getPrice());
 			
 			LocationModel.getInstance().set(mLocation);
 			res.setData(toXLocation(mLocation));
@@ -268,6 +270,7 @@ public class LocationController{
 			ret.setCapacity(mLocation.getCapacity());
 			ret.setStar(mLocation.getStar());
 			ret.setRoom(mLocation.getRoom());
+			ret.setPrice(mLocation.getPrice());
 		}
 		
 		return ret;

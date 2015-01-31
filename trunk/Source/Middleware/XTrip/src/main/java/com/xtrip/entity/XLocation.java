@@ -187,7 +187,7 @@ public class XLocation {
 		return this.price;
 	}
 
-	public void setPrice(long price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 	

@@ -15,4 +15,5 @@ public class CommonResponse {
 		public static final XResponse SERVER_ERROR = new XResponse(500, "Server error");
 		public static final XResponse ITEM_NOTFOUND = new XResponse(501, "Item is not found");
 		public static final XResponse DUPLICATE_KEY = new XResponse(502, "Item id is already exist");
+		public static final XResponse NO_SUITABLE_RESULT = new XResponse(503, "No suitable result found");
 }
