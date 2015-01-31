@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.xtrip.common.CommonResponse;
+import com.xtrip.common.Enumaration;
 import com.xtrip.common.XResponse;
 import com.xtrip.entity.XDay;
 import com.xtrip.entity.XLoc;
@@ -292,6 +293,152 @@ public class PlanController {
 			res.setData(toXPlan(mPlan));
 			return res;
 		}catch(Exception ex){
+			return CommonResponse.SERVER_ERROR;
+		}
+	}
+	
+	@RequestMapping("/schedule/delete")
+	public @ResponseBody
+	XResponse deleteSchedule(@RequestParam(value = "day", required = false) byte day,	 		
+	 		 @RequestParam(value = "id", required = false) String id){
+		try{
+			XResponse res = new XResponse();
+			
+			if(id == null || id.isEmpty()){
+				return CommonResponse.MISSING_PARAM;
+			}			
+			
+			if(day <= 0){
+				return CommonResponse.INVALID_PARAM;
+			}
+			
+			// check if plan is exist
+			Plan mPlan = PlanModel.getInstance().get(id);		
+			if(mPlan == null){
+				return CommonResponse.ITEM_NOTFOUND;
+			}
+		
+			//remove old data
+			List<PLocation> newSchedulers = new ArrayList<PLocation>();			
+			if(mPlan.getSchedulers() != null){
+				for(PLocation pLoc : mPlan.getSchedulers()){
+					if(pLoc.getDay() != day){
+						newSchedulers.add(pLoc);
+					}
+				}
+			}
+			
+			//put new schedule
+		    mPlan.setSchedule(newSchedulers);
+			PlanModel.getInstance().set(mPlan);			
+	
+			res.setData(toXPlan(mPlan));
+			return res;
+		}catch(Exception ex){
+			return CommonResponse.SERVER_ERROR;
+		}
+	}
+	
+	@RequestMapping("/schedule/suggest")
+	public @ResponseBody 
+	XResponse suggestPlan(@RequestParam(value = "day", required = false) byte day,
+						@RequestParam(value = "budget", required = false) float budget,
+						@RequestParam(value = "member", required = false) int member,
+						@RequestParam(value = "postCode", required = false) String postcode,
+						@RequestParam(value = "liveRate", required = false) int liveRate,
+						@RequestParam(value = "eatRate", required = false) int eatRate,
+						@RequestParam(value = "playRate", required = false) int playRate) {
+		try {
+			XResponse res = new XResponse();
+
+			if (postcode == null) {
+				return CommonResponse.MISSING_PARAM;
+			}
+
+			if (day <= 0 || budget <= 0 || member <= 0 || postcode.length() != 10 || liveRate <= 0 || eatRate <= 0 || playRate <= 0 || (liveRate + eatRate + playRate) != 100) {
+				return CommonResponse.INVALID_PARAM;
+			}
+
+			// calculate budget for each person per day
+			Plan suggestPlan = new Plan();
+			int rEat = 3;
+			int rLive = 1;
+			int rPlay = 2;				
+			float minEat = budget*eatRate/100/member/day/rEat;
+			float minLive = budget*liveRate/100/member/day/rLive;
+			float minPlay = budget*playRate/100/member/day/rPlay;
+			
+			// get suitable location from db
+			List<ObjectId> locations = LocationModel.getInstance().getSliceLocationIds(null, postcode, null);
+			if(locations == null || locations.isEmpty()){
+				return CommonResponse.NO_SUITABLE_RESULT;
+			}
+			// init locations rerouece for each type
+			List<Location> eatLocations = new ArrayList<Location>();
+			List<Location> liveLocations = new ArrayList<Location>();
+			List<Location> playLocations = new ArrayList<Location>();
+			for(ObjectId locationId : locations){
+				Location mLocation = LocationModel.getInstance().get(locationId);
+				if(Enumaration.LIVE_LOCATION.contains(mLocation.getType())){
+					if(liveLocations.size() < rLive*day && mLocation.getPrice() <= minLive){
+						liveLocations.add(mLocation);
+					}
+				}					
+				else if(Enumaration.EAT_LOCATION.contains(mLocation.getType())){
+					if(eatLocations.size() < rEat*day && mLocation.getPrice() <= minEat){
+						eatLocations.add(mLocation);
+					}
+				}
+				else{
+					if(playLocations.size() < rPlay*day && mLocation.getPrice() <= minPlay){
+						playLocations.add(mLocation);
+					}	
+				}
+			}
+			
+			// generate scheduler for plan
+			List<PLocation> schedulers = new ArrayList<PLocation>();
+			int liveIndex = 0;
+			int eatIndex = 0;
+			int playIndex = 0;
+			for(byte d=1; d <= day; d++){
+				byte order = 0;
+				if(eatIndex < eatLocations.size()){
+					PLocation pLoc = new PLocation(d, eatLocations.get(eatIndex++).getId());
+					pLoc.setOrder(++order);
+					schedulers.add(pLoc);
+				}
+				if(playIndex < playLocations.size()){
+					PLocation pLoc = new PLocation(d, playLocations.get(playIndex++).getId());
+					pLoc.setOrder(++order);
+					schedulers.add(pLoc);
+				}
+				if(eatIndex < eatLocations.size()){
+					PLocation pLoc = new PLocation(d, eatLocations.get(eatIndex++).getId());
+					pLoc.setOrder(++order);
+					schedulers.add(pLoc);
+				}
+				if(playIndex < playLocations.size()){
+					PLocation pLoc = new PLocation(d, playLocations.get(playIndex++).getId());
+					pLoc.setOrder(++order);
+					schedulers.add(pLoc);
+				}
+				if(eatIndex < eatLocations.size()){
+					PLocation pLoc = new PLocation(d, eatLocations.get(eatIndex++).getId());
+					pLoc.setOrder(++order);
+					schedulers.add(pLoc);
+				}
+				if(liveIndex < liveLocations.size()){
+					PLocation pLoc = new PLocation(d, liveLocations.get(liveIndex++).getId());
+					pLoc.setOrder(++order);
+					schedulers.add(pLoc);
+				}
+			}
+
+			suggestPlan.setSchedule(schedulers);
+			res.setData(toXPlan(suggestPlan));
+			return res;
+		} catch (Exception ex) {
 			return CommonResponse.SERVER_ERROR;
 		}
 	}

@@ -33,6 +33,7 @@ public class Location extends BaseBean {
 	private int capacity;
 	private byte star;
 	private int room;
+	private float price;
 
 	public Location() {
 		name = "";
@@ -61,6 +62,7 @@ public class Location extends BaseBean {
 		capacity = 0;
 		star = '1';
 		room = 0;
+		price = 0;
 	}
 
 	public String getId() {
@@ -273,5 +275,13 @@ public class Location extends BaseBean {
 
 	public void setRoom(int room) {
 		this.room = room;
+	}
+	
+	public float getPrice() {
+		return this.price;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
 	}
 }

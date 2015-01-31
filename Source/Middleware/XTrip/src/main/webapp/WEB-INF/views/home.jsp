@@ -15,6 +15,9 @@
 	</h1>
 	</center>
 	
+	<br><br><b>Update 31.01.2015:</b>
+	<br>- update api for suggest plan
+	
 	<br><br><b>Update 28.01.2015:</b>
 	<br>- update api for CRUD plan
 	
