@@ -25,6 +25,7 @@ import com.xtrip.entity.XLocation;
 import com.xtrip.entity.XPlan;
 import com.xtrip.model.LocationModel;
 import com.xtrip.model.PlanModel;
+import com.xtrip.model.bean.Budget;
 import com.xtrip.model.bean.Location;
 import com.xtrip.model.bean.PLocation;
 import com.xtrip.model.bean.Plan;
@@ -359,8 +360,13 @@ public class PlanController {
 				return CommonResponse.INVALID_PARAM;
 			}
 
-			// calculate budget for each person per day
 			Plan suggestPlan = new Plan();
+			suggestPlan.setMember((short)member);
+			suggestPlan.setProvince(postcode);
+			suggestPlan.setBuget(new Budget());
+			
+			
+			// calculate budget for each person per day			
 			int rEat = 3;
 			int rLive = 1;
 			int rPlay = 2;				
